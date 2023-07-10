@@ -1,7 +1,7 @@
 const data = {
   port: parseInt(process.env.PORT, 10) || 3000,
   // 是否开启swagger
-  enableSwagger: true,
+  enableSwagger: false,
   // 数据库配置
   database: {
     type: 'mysql',
