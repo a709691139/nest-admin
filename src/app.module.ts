@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import customConfig from '@/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SystemModule } from './modules/system/system.module';
+import { DemoModule } from './modules/demo/demo.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SystemModule } from './modules/system/system.module';
       inject: [ConfigService], // 记得注入服务，不然useFactory函数中获取不到ConfigService
     }),
     SystemModule,
+    DemoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

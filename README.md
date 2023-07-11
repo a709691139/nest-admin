@@ -6,6 +6,9 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 
 - nestjs: https://nestjs.bootcss.com/first-steps.html
 - swagger: https://docs.nestjs.com/openapi/types-and-parameters
+  https://docs.nestjs.com/openapi/operations
+- typeorm: https://typeorm.bootcss.com/entities
+- 校验 dto: class-validator
 
 ## 接口
 
@@ -14,6 +17,18 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 
 ## 运行
 
-- 安装 mysql ，创建 nestjs 数据库
+- 安装 mysql ，创建 `nestjs` 数据库
 - 安装 redis
 - 配置好`config/development.ts`
+
+## todo
+
+### demo 例子
+
+- demoOne 单表查询增删改查
+- demoOneSoftDelete 单表查询增删改查-软删除，每个表都可以选加入 createdAt createdBy deletedAt
+- demoOneToOne 一对一表
+- demoOneToMany 一对多表
+- demoManyToMany 多对多
+
+### 登陆注册
