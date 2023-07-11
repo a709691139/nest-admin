@@ -32,3 +32,12 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 - demoManyToMany 多对多
 
 ### 登陆注册
+
+- 验证码
+- 登陆
+- 注册
+- 怎么添加 token 验证+swagger
+
+### 表单
+
+- 表单验证+swagger
