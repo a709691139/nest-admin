@@ -6,10 +6,11 @@ import { DemoOne } from './demoOne/demoOne.entity';
 import { DemoOneSoftDeleteService } from './demoOneSoftDelete/demoOneSoftDelete.service';
 import { DemoOneSoftDelete } from './demoOneSoftDelete/demoOneSoftDelete.entity';
 import { DemoOneSoftDeleteController } from './demoOneSoftDelete/demoOneSoftDelete.controller';
+import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DemoOne, DemoOneSoftDelete])],
   controllers: [DemoOneController, DemoOneSoftDeleteController],
-  providers: [DemoOneService, DemoOneSoftDeleteService],
+  providers: [DemoOneService, DemoOneSoftDeleteService, HttpCommonDataProvider],
 })
 export class DemoModule {}

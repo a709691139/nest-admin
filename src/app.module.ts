@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Scope } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -6,6 +6,10 @@ import customConfig from '@/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SystemModule } from './modules/system/system.module';
 import { DemoModule } from './modules/demo/demo.module';
+import { PostSubscriber } from '@/provider/EntityListener';
+import { HttpCommonDataProvider } from './provider/HttpCommonDataProvider';
+import { RequestInterceptor } from './provider/RequestInterceptor';
+import { APP_INTERCEPTOR, REQUEST } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -23,6 +27,15 @@ import { DemoModule } from './modules/demo/demo.module';
     DemoModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    HttpCommonDataProvider,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RequestInterceptor,
+    },
+    PostSubscriber,
+  ],
+  exports: [HttpCommonDataProvider],
 })
 export class AppModule {}

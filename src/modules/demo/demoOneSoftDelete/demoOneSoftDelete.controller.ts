@@ -1,15 +1,27 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Headers,
+  Inject,
+} from '@nestjs/common';
 import { DemoOneSoftDeleteService } from './demoOneSoftDelete.service';
 import { DemoOneSoftDelete } from './demoOneSoftDelete.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiPaginatedResponse } from '@/utils/swagger';
 import { Pagination } from '@/dto/Pagination';
+import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { createQueryWrapper } from '@/utils/query';
 
 @ApiTags('demoOneSoftDelete')
 @Controller('demoOneSoftDelete')
 export class DemoOneSoftDeleteController {
   constructor(
     private readonly demoOneSoftDeleteService: DemoOneSoftDeleteService,
+    private readonly httpCommonDataProvider: HttpCommonDataProvider,
   ) {}
 
   @Get('/page')
@@ -18,12 +30,20 @@ export class DemoOneSoftDeleteController {
     summary: '分页查询',
     description: '分页查询',
   })
-  async page(@Query('page') page: number, @Query('pageSize') pageSize: number) {
+  async page(
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+    @Query() query: DemoOneSoftDelete,
+  ) {
+    query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);
     pageSize = Number(pageSize);
     const [data, total] = await this.demoOneSoftDeleteService.findAndCount(
       page,
       pageSize,
+      {
+        where: createQueryWrapper(query),
+      },
     );
     const pagination: Pagination<DemoOneSoftDelete> = {
       data: data || [],
@@ -35,8 +55,9 @@ export class DemoOneSoftDeleteController {
   }
 
   @Post('/create')
-  async create(@Body() demoOneDto: DemoOneSoftDelete) {
-    return this.demoOneSoftDeleteService.create(demoOneDto);
+  async create(@Body() dto: DemoOneSoftDelete) {
+    dto.tenantId = this.httpCommonDataProvider.getTenantId();
+    return this.demoOneSoftDeleteService.create(dto);
   }
 
   @Get('get')
@@ -45,8 +66,8 @@ export class DemoOneSoftDeleteController {
   }
 
   @Post('/update')
-  async update(@Body() demoOneDto: DemoOneSoftDelete) {
-    return this.demoOneSoftDeleteService.update(demoOneDto.id, demoOneDto);
+  async update(@Body() dto: DemoOneSoftDelete) {
+    return this.demoOneSoftDeleteService.update(dto.id, dto);
   }
 
   @Post('/remove/:id')

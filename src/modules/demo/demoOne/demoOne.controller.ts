@@ -4,11 +4,16 @@ import { DemoOne } from './demoOne.entity';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Pagination } from '@/dto/Pagination';
 import { ApiPaginatedResponse } from '@/utils/swagger';
+import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { createQueryWrapper } from '@/utils/query';
 
 @ApiTags('demoOne')
 @Controller('demoOne')
 export class DemoOneController {
-  constructor(private readonly demoOneService: DemoOneService) {}
+  constructor(
+    private readonly demoOneService: DemoOneService,
+    private readonly httpCommonDataProvider: HttpCommonDataProvider,
+  ) {}
 
   @Get('/page')
   @ApiPaginatedResponse(DemoOne)
@@ -16,12 +21,20 @@ export class DemoOneController {
     summary: '分页查询',
     description: '分页查询',
   })
-  async page(@Query('page') page: number, @Query('pageSize') pageSize: number) {
+  async page(
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+    @Query() query: DemoOne,
+  ) {
+    query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);
     pageSize = Number(pageSize);
     const [data, total] = await this.demoOneService.findAndCount(
       page,
       pageSize,
+      {
+        where: createQueryWrapper(query),
+      },
     );
     const pagination: Pagination<DemoOne> = {
       data: data || [],
@@ -34,8 +47,9 @@ export class DemoOneController {
 
   @Post('/create')
   @ApiResponse({ type: DemoOne })
-  async create(@Body() demoOneDto: DemoOne) {
-    return this.demoOneService.create(demoOneDto);
+  async create(@Body() dto: DemoOne) {
+    dto.tenantId = this.httpCommonDataProvider.getTenantId();
+    return this.demoOneService.create(dto);
   }
 
   @Get('get')
@@ -45,8 +59,8 @@ export class DemoOneController {
   }
 
   @Post('/update')
-  async update(@Body() demoOneDto: DemoOne) {
-    return this.demoOneService.update(demoOneDto.id, demoOneDto);
+  async update(@Body() dto: DemoOne) {
+    return this.demoOneService.update(dto.id, dto);
   }
 
   @Post('/remove/:id')
