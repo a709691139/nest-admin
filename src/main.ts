@@ -3,12 +3,19 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
+import { join } from 'path';
+
+const PREFIX = '/api';
+const SWAGGER_PATH = '/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.setGlobalPrefix('/api');
+  app.setGlobalPrefix(PREFIX);
   app.enableCors();
-
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/static/', //设置虚拟路径
+  });
   const configSerive = app.get(ConfigService);
   const enableSwagger = configSerive.get<boolean>('enableSwagger');
   if (enableSwagger) {
@@ -31,10 +38,15 @@ async function bootstrap() {
       // .setBasePath('http://localhost:5000')
       .build();
     const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup('/swagger', app, document);
+    SwaggerModule.setup(SWAGGER_PATH, app, document);
   }
 
   const port = configSerive.get<number>('port');
-  await app.listen(port);
+  await app.listen(port, () => {
+    Logger.debug(`
+    env: ${process.env.NODE_ENV}
+    启动成功：http://localhost:${port}${PREFIX}
+    API 文档：http://localhost:${port}${SWAGGER_PATH}`);
+  });
 }
 bootstrap();

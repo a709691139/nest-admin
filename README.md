@@ -14,12 +14,21 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 
 - api: http://localhost:3000/api/xxx 接口统一前缀 /api
 - swagger: http://localhost:3000/swagger
+- 静态文件: 位置/public，访问: http://localhost:3000/static/temp.js
 
 ## 运行
 
 - 安装 mysql ，创建 `nestjs` 数据库
 - 安装 redis
 - 配置好`config/development.ts`
+
+## 分页查询，前端可自定义参数条件
+
+- 1、支持模糊查询 前后带\*
+- 2、取非查询 在查询输入框前面输入! 则查询该字段不等于输入值的数据 (数值类型不支持此种查询,可以将数值字段定义为字符串类型的)
+- 3、in 查询 若传入的数据带,(逗号) 则表示该查询为 in 查询
+- 4、时间范围查询，需包含两个字段：{_}\_begin，{_}\_end
+- 5、大小查询："lt 100" 中间空格 , 小于查询 lt 100, 小于等于 le 100, 大于 gt 100, 大于等于 ge 100
 
 ## todo
 
