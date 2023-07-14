@@ -4,9 +4,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   DeleteDateColumn,
-  BeforeInsert,
 } from 'typeorm';
-import { Exclude, Expose, Transform } from 'class-transformer';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class DemoOneSoftDelete {

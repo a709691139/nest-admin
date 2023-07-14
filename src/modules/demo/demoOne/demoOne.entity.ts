@@ -1,19 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BeforeInsert,
-  ValueTransformer,
-} from 'typeorm';
-import { Exclude, Expose, Transform } from 'class-transformer';
-import * as dayjs from 'dayjs';
-import {
-  DateColumn,
-  DateTimeColumn,
-  DateTimeTransformer,
-  DateTransformer,
-} from '@/utils/transform';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { DateColumn, DateTimeColumn } from '@/utils/transform';
 
 @Entity()
 export class DemoOne {

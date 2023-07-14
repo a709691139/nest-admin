@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  Headers,
-  Inject,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { DemoOneSoftDeleteService } from './demoOneSoftDelete.service';
 import { DemoOneSoftDelete } from './demoOneSoftDelete.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
