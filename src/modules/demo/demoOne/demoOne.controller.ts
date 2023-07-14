@@ -1,9 +1,22 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Type,
+} from '@nestjs/common';
 import { DemoOneService } from './demoOne.service';
 import { DemoOne } from './demoOne.entity';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Pagination } from '@/dto/Pagination';
-import { ApiPaginatedResponse } from '@/utils/swagger';
+import { ApiPaginatedResponse, ApiResponseWrap } from '@/utils/swagger';
 import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
 
@@ -59,6 +72,7 @@ export class DemoOneController {
   }
 
   @Post('/update')
+  @ApiResponseWrap(DemoOne)
   async update(@Body() dto: DemoOne) {
     return this.demoOneService.update(dto.id, dto);
   }
