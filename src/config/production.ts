@@ -12,7 +12,7 @@ const data = {
     database: 'nestjs',
     timezone: 'Asia/Shanghai',
     charset: 'utf8mb4',
-    entities: ['./**/*.entity.js'],
+    entities: ['./src/**/*.entity.js'],
     synchronize: false,
     logging: true,
   },
