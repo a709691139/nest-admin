@@ -50,3 +50,6 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 ### 表单
 
 - 表单验证+swagger
+- 表单设计器，前端的增删改查可视化 schema
+- - 如果存后端：前端根据/apiSchemaPage/:pageid， 来获取
+- - 如果存前端：前端根据/apiSchemaPage/:pageid， 先判断前端有无定义了，无就去读接口。 或者自定义其他页面+路由吧

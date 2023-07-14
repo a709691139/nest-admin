@@ -5,11 +5,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import customConfig from '@/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SystemModule } from './modules/system/system.module';
-import { DemoModule } from './modules/demo/demo.module';
 import { PostSubscriber } from '@/provider/EntityListener';
 import { HttpCommonDataProvider } from './provider/HttpCommonDataProvider';
 import { RequestInterceptor } from './provider/RequestInterceptor';
 import { APP_INTERCEPTOR, REQUEST } from '@nestjs/core';
+import { DemoOneSoftDeleteModule } from './modules/demo/demoOneSoftDelete/demoOneSoftDelete.module';
+import { DemoOneModule } from './modules/demo/demoOne/demoOne.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { APP_INTERCEPTOR, REQUEST } from '@nestjs/core';
       inject: [ConfigService], // 记得注入服务，不然useFactory函数中获取不到ConfigService
     }),
     SystemModule,
-    DemoModule,
+    DemoOneModule,
+    DemoOneSoftDeleteModule,
   ],
   controllers: [AppController],
   providers: [
@@ -36,6 +38,5 @@ import { APP_INTERCEPTOR, REQUEST } from '@nestjs/core';
     },
     PostSubscriber,
   ],
-  exports: [HttpCommonDataProvider],
 })
 export class AppModule {}
