@@ -6,13 +6,10 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { CommonEntity } from '@/utils/commonEntity';
 
 @Entity()
-export class DemoOneSoftDelete {
-  @Exclude()
-  @Column('varchar', { length: 32 })
-  tenantId: string;
-
+export class DemoOneSoftDelete extends CommonEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

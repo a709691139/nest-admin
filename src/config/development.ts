@@ -10,11 +10,11 @@ const data = {
     username: 'root',
     password: 'root',
     database: 'nestjs',
-    timezone: 'UTC',
+    timezone: 'Asia/Shanghai',
     charset: 'utf8mb4',
     entities: ['./**/*.entity.js'],
     synchronize: true,
-    logging: false,
+    logging: true,
   },
 };
 export default data;

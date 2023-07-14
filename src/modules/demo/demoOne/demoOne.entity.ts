@@ -2,13 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { DateColumn, DateTimeColumn } from '@/utils/transform';
-
+import { CommonEntity } from '@/utils/commonEntity';
 @Entity()
-export class DemoOne {
-  @Exclude()
-  @Column('varchar', { length: 32 })
-  tenantId: string;
-
+export class DemoOne extends CommonEntity {
   @ApiProperty({ required: false })
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -21,33 +21,33 @@ export function DateTimeColumn(options?: ColumnOptions): PropertyDecorator {
 }
 
 export class DateTransformer implements ValueTransformer {
-  from(value: Date): string {
+  from(value): string {
     if (!value) {
-      return null;
+      return value;
     }
     return dayjs(value).format('YYYY-MM-DD');
   }
 
   to(value: string): string {
     if (!value) {
-      return null;
+      return value;
     }
-    console.log('to', value);
     return dayjs(value).format('YYYY-MM-DD');
   }
 }
 
 export class DateTimeTransformer implements ValueTransformer {
-  from(value: Date): string {
+  from(value): string {
     if (!value) {
-      return null;
+      return value;
     }
     return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
   }
 
   to(value: string): string {
+    console.log('to', value);
     if (!value) {
-      return null;
+      return value;
     }
     return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
   }
