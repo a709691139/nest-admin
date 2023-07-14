@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
 
 const PREFIX = '/api';
@@ -16,6 +16,8 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'), {
     prefix: '/static/', //设置虚拟路径
   });
+  app.useGlobalPipes(new ValidationPipe());
+
   const configSerive = app.get(ConfigService);
   const enableSwagger = configSerive.get<boolean>('enableSwagger');
   if (enableSwagger) {
