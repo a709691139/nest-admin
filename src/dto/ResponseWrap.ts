@@ -5,8 +5,22 @@ export class ResponseWrap<T> {
   data: T;
 
   @ApiProperty()
-  code: number;
+  status: number;
 
   @ApiProperty()
-  message: number;
+  msg: string;
+}
+
+export class Pagination<T> {
+  @ApiProperty()
+  data: T[];
+
+  @ApiProperty()
+  page: number;
+
+  @ApiProperty()
+  pageSize: number;
+
+  @ApiProperty()
+  total: number;
 }

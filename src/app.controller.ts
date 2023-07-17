@@ -1,11 +1,11 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiExtraModels, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Pagination } from './dto/Pagination';
+import { Pagination, ResponseWrap } from './dto/ResponseWrap';
 import { HttpCommonDataProvider } from './provider/HttpCommonDataProvider';
 
 @ApiTags('app')
-@ApiExtraModels(Pagination)
+@ApiExtraModels(Pagination, ResponseWrap)
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}

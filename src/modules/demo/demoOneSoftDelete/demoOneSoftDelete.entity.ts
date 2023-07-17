@@ -1,15 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  DeleteDateColumn,
-} from 'typeorm';
-import { Exclude } from 'class-transformer';
-import { CommonEntity } from '@/utils/commonEntity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { CommonSoftDeleteEntity } from '@/dto/CommonEntity';
 
 @Entity()
-export class DemoOneSoftDelete extends CommonEntity {
+export class DemoOneSoftDelete extends CommonSoftDeleteEntity {
+  @ApiProperty({ required: false })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,7 +15,4 @@ export class DemoOneSoftDelete extends CommonEntity {
   })
   @Column('varchar', { length: 200 })
   name: string;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }

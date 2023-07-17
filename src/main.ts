@@ -31,10 +31,8 @@ async function bootstrap() {
         const message = messages.join(', ');
         throw new HttpException(
           {
-            // TODO 自定义返回内容
-            statusCode: HttpStatus.BAD_REQUEST,
-            message: 'Validation hehe failed',
-            errors: message,
+            status: HttpStatus.BAD_REQUEST,
+            msg: 'Validation failed ' + message,
           },
           HttpStatus.BAD_REQUEST,
         );

@@ -2,10 +2,11 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { DemoOneSoftDeleteService } from './demoOneSoftDelete.service';
 import { DemoOneSoftDelete } from './demoOneSoftDelete.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ApiPaginatedResponse } from '@/utils/swagger';
-import { Pagination } from '@/dto/Pagination';
+import { ApiPaginatedResponse, ApiResponseWrap } from '@/utils/swagger';
+import { Pagination } from '@/dto/ResponseWrap';
 import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
+import { responseSuccess } from '@/utils/result';
 
 @ApiTags('demoOneSoftDelete')
 @Controller('demoOneSoftDelete')
@@ -42,27 +43,30 @@ export class DemoOneSoftDeleteController {
       pageSize,
       total,
     };
-    return pagination;
+    return responseSuccess(pagination);
   }
 
   @Post('/create')
+  @ApiResponseWrap(DemoOneSoftDelete)
   async create(@Body() dto: DemoOneSoftDelete) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
-    return this.demoOneSoftDeleteService.create(dto);
+    return responseSuccess(this.demoOneSoftDeleteService.create(dto));
   }
 
   @Get('get')
+  @ApiResponseWrap(DemoOneSoftDelete)
   async findOne(@Query('id') id: string) {
-    return this.demoOneSoftDeleteService.findOne(id);
+    return responseSuccess(this.demoOneSoftDeleteService.findOne(id));
   }
 
   @Post('/update')
+  @ApiResponseWrap(DemoOneSoftDelete)
   async update(@Body() dto: DemoOneSoftDelete) {
-    return this.demoOneSoftDeleteService.update(dto.id, dto);
+    return responseSuccess(this.demoOneSoftDeleteService.update(dto.id, dto));
   }
 
   @Post('/remove/:id')
   async remove(@Param('id') id: string) {
-    return this.demoOneSoftDeleteService.remove(id);
+    return responseSuccess(this.demoOneSoftDeleteService.remove(id));
   }
 }

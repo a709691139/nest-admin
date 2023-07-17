@@ -15,10 +15,11 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Pagination } from '@/dto/Pagination';
+import { Pagination } from '@/dto/ResponseWrap';
 import { ApiPaginatedResponse, ApiResponseWrap } from '@/utils/swagger';
 import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
+import { responseSuccess } from '@/utils/result';
 
 @ApiTags('demoOne')
 @Controller('demoOne')
@@ -55,30 +56,30 @@ export class DemoOneController {
       pageSize,
       total,
     };
-    return pagination;
+    return responseSuccess(pagination);
   }
 
   @Post('/create')
-  @ApiResponse({ type: DemoOne })
+  @ApiResponseWrap(DemoOne)
   async create(@Body() dto: DemoOne) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
-    return this.demoOneService.create(dto);
+    return responseSuccess(this.demoOneService.create(dto));
   }
 
   @Get('get')
-  @ApiResponse({ type: DemoOne })
+  @ApiResponseWrap(DemoOne)
   async findOne(@Query('id') id: string) {
-    return this.demoOneService.findOne(id);
+    return responseSuccess(this.demoOneService.findOne(id));
   }
 
   @Post('/update')
   @ApiResponseWrap(DemoOne)
   async update(@Body() dto: DemoOne) {
-    return this.demoOneService.update(dto.id, dto);
+    return responseSuccess(this.demoOneService.update(dto.id, dto));
   }
 
   @Post('/remove/:id')
   async remove(@Param('id') id: string) {
-    return this.demoOneService.remove(id);
+    return responseSuccess(this.demoOneService.remove(id));
   }
 }

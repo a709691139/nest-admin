@@ -30,6 +30,13 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 - 4、时间范围查询，需包含两个字段：{_}\_begin，{_}\_end
 - 5、大小查询："lt 100" 中间空格 , 小于查询 lt 100, 小于等于 le 100, 大于 gt 100, 大于等于 ge 100
 
+## 接口返回数据
+
+统一格式返回， `{status:0,message:"成功", data:'xxx'}`
+
+- 普通 @ApiResponseWrap(DemoOne)
+- 分页 @ApiPaginatedResponse(DemoOne)
+
 ## 接口校验
 
 不建议在 entity 里加，因为会把那些分页查询编辑接口也校验

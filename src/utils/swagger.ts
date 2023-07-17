@@ -1,5 +1,4 @@
-import { Pagination } from '@/dto/Pagination';
-import { ResponseWrap } from '@/dto/ResponseWrap';
+import { Pagination, ResponseWrap } from '@/dto/ResponseWrap';
 import { Type, applyDecorators } from '@nestjs/common';
 import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 
@@ -11,12 +10,21 @@ export const ApiPaginatedResponse = <TModel extends Type<any>>(
     ApiOkResponse({
       schema: {
         allOf: [
-          { $ref: getSchemaPath(Pagination) },
+          { $ref: getSchemaPath(ResponseWrap) },
           {
             properties: {
               data: {
-                type: 'array',
-                items: { $ref: getSchemaPath(model) },
+                allOf: [
+                  { $ref: getSchemaPath(Pagination) },
+                  {
+                    properties: {
+                      data: {
+                        type: 'array',
+                        items: { $ref: getSchemaPath(model) },
+                      },
+                    },
+                  },
+                ],
               },
             },
           },
@@ -31,15 +39,27 @@ export const ApiResponseWrap = <TModel extends Type<any>>(model: TModel) => {
     ApiExtraModels(model),
     ApiOkResponse({
       schema: {
-        type: 'object',
-        properties: {
-          message: { type: 'string' },
-          code: { type: 'number' },
-          data: {
-            $ref: getSchemaPath(model),
+        allOf: [
+          { $ref: getSchemaPath(ResponseWrap) },
+          {
+            properties: {
+              data: {
+                $ref: getSchemaPath(model),
+              },
+            },
           },
-        },
+        ],
       },
+      // schema: {
+      //   type: 'object',
+      //   properties: {
+      //     message: { type: 'number' },
+      //     status: { type: 'number' },
+      //     data: {
+      //       $ref: getSchemaPath(model),
+      //     },
+      //   },
+      // },
     }),
   );
 };
