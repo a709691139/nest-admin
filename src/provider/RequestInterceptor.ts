@@ -10,7 +10,7 @@ import {
 @Injectable({ scope: Scope.REQUEST })
 export class RequestInterceptor implements NestInterceptor {
   constructor() {
-    console.log('RequestInterceptor constructor');
+    // console.log('RequestInterceptor constructor');
   }
 
   intercept(context: ExecutionContext, next: CallHandler) {

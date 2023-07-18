@@ -16,5 +16,12 @@ const data = {
     synchronize: true,
     logging: true,
   },
+  redis: {
+    host: 'localhost',
+    port: 6379,
+    database: 0,
+    password: '',
+    ttl: 60,
+  },
 };
 export default data;

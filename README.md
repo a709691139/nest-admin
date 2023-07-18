@@ -37,6 +37,21 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 - 普通 @ApiResponseWrap(DemoOne)
 - 分页 @ApiPaginatedResponse(DemoOne)
 
+## redis
+
+```ts
+@InjectRedis() private readonly redis: Redis,
+await this.redis.set('testMap', JSON.stringify({ heh: 1 }), 'EX', 10);
+
+// 锁
+await this.lockService.lock('test1', 2 * 60 * 1000, 100, 10);
+await new Promise((resolve) => setTimeout(resolve, 5000));
+this.count++;
+this.lockService.unlock('test1');
+```
+
+## 数据库事务
+
 ## 接口校验
 
 不建议在 entity 里加，因为会把那些分页查询编辑接口也校验

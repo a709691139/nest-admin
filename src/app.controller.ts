@@ -3,12 +3,19 @@ import { AppService } from './app.service';
 import { ApiExtraModels, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Pagination, ResponseWrap } from './dto/ResponseWrap';
 import { HttpCommonDataProvider } from './provider/HttpCommonDataProvider';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
+import { RedisLockService } from 'nestjs-simple-redis-lock';
 
 @ApiTags('app')
 @ApiExtraModels(Pagination, ResponseWrap)
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    @InjectRedis() private readonly redis: Redis,
+    private readonly lockService: RedisLockService,
+  ) {}
   @Inject()
   private readonly httpCommonDataProvider: HttpCommonDataProvider;
 
@@ -22,7 +29,7 @@ export class AppController {
       this.httpCommonDataProvider.getCounter(),
     );
     this.count++;
-    // console.log(`index1 / 当前进程的PID为：${process.pid}`, this.count);
+    console.log(`index1 / 当前进程的PID为：${process.pid}`, this.count);
     await new Promise((resolve) => setTimeout(resolve, 5000));
     // console.log('index1 count', this.count);
     return this.appService.getHello();
@@ -36,5 +43,34 @@ export class AppController {
     await new Promise((resolve) => setTimeout(resolve, 5000));
     console.log('index2 count', this.count);
     return this.appService.getHello();
+  }
+
+  @Get('/redis/set')
+  async redisSet() {
+    await this.redis.set('testMap', JSON.stringify({ heh: 1 }), 'EX', 10);
+    const data = await this.redis.get('testMap');
+    return {
+      data,
+      type: typeof data,
+    };
+  }
+
+  @Get('/redis/get')
+  async redisGet() {
+    return this.redis.get('test');
+  }
+
+  @Get('/redis/del')
+  async redisDel() {
+    return this.redis.del('test');
+  }
+
+  @Get('/redis/lock')
+  async redisLock() {
+    await this.lockService.lock('test1', 2 * 60 * 1000, 100, 10);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    this.count++;
+    this.lockService.unlock('test1');
+    return this.count;
   }
 }

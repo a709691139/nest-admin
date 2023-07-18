@@ -9,7 +9,7 @@ export class HttpCommonDataProvider {
   public counter = 0;
   public tenantId = '';
   constructor(@Inject(REQUEST) private request) {
-    console.log('HttpCommonDataProvider instantiated');
+    // console.log('HttpCommonDataProvider instantiated');
     this.tenantId =
       this.request.headers.tenantid || this.request.headers.tenantId || '001';
   }
