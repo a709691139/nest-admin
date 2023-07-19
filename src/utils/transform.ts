@@ -45,7 +45,6 @@ export class DateTimeTransformer implements ValueTransformer {
   }
 
   to(value: string): string {
-    console.log('to', value);
     if (!value) {
       return value;
     }

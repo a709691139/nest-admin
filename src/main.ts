@@ -11,6 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { join } from 'path';
+import { GlobalExceptionFilter } from './utils/global-exception.filter';
 
 const PREFIX = '/api';
 const SWAGGER_PATH = '/swagger';
@@ -39,6 +40,7 @@ async function bootstrap() {
       },
     }),
   );
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   const configSerive = app.get(ConfigService);
   const enableSwagger = configSerive.get<boolean>('enableSwagger');

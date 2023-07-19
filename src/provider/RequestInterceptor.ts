@@ -14,7 +14,7 @@ export class RequestInterceptor implements NestInterceptor {
   }
 
   intercept(context: ExecutionContext, next: CallHandler) {
-    const request = context.switchToHttp().getRequest();
+    // const request = context.switchToHttp().getRequest();
     // 存储请求头为全局变量
     // console.log('pre header', request.headers);
     // this.httpCommonDataProvider.setTenantId(

@@ -1,4 +1,4 @@
-import { Module, Scope } from '@nestjs/common';
+import { MiddlewareConsumer, Module, Scope } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -13,6 +13,7 @@ import { DemoOneSoftDeleteModule } from './modules/demo/demoOneSoftDelete/demoOn
 import { DemoOneModule } from './modules/demo/demoOne/demoOne.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisLockModule } from 'nestjs-simple-redis-lock';
+import { AuthMiddleware } from './middleWare/AuthMiddleWare';
 
 @Module({
   imports: [
@@ -58,4 +59,8 @@ import { RedisLockModule } from 'nestjs-simple-redis-lock';
     PostSubscriber,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}

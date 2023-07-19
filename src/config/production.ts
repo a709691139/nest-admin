@@ -1,4 +1,5 @@
 const data = {
+  appkey: '_1555233249358_7017',
   port: parseInt(process.env.PORT, 10) || 3000,
   // 是否开启swagger
   enableSwagger: false,

@@ -50,8 +50,6 @@ this.count++;
 this.lockService.unlock('test1');
 ```
 
-## 数据库事务
-
 ## 接口校验
 
 不建议在 entity 里加，因为会把那些分页查询编辑接口也校验
@@ -75,7 +73,17 @@ export class AddUserDto {
   @ArrayNotEmpty()
   myArray: any[];
 }
+
+// 可以自动去除多余的字段，只要RegisUserDto定义的
+@UsePipes(new ValidationPipe({ whitelist: true }))
+async regis(@Body() dto: RegisUserDto) {
+  console.log('dto', dto);
+}
 ```
+
+## 数据表命名
+
+系统级别的都用`sys_`前缀，如`sys_user`
 
 ## todo
 
@@ -93,6 +101,10 @@ export class AddUserDto {
 - 登陆
 - 注册
 - 怎么添加 token 验证+swagger
+
+```ts
+@UseGuards(AuthGuard)
+```
 
 ### 表单
 
