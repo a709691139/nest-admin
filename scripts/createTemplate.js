@@ -1,18 +1,36 @@
 const fs = require('fs');
 const path = require('path');
+const template = require('lodash/template');
 
 const originFileConfig = {
-  entityName: 'DemoOne',
-  fileNamePrefix: 'demoOne',
-  folderPath: path.join('./src/modules/demo/demoOne'),
-};
-const newFileConfig = {
-  entityName: 'User',
-  fileNamePrefix: 'user',
-  folderPath: path.join(`./scripts/output/user`),
+  folderPaths: {
+    one: path.join('./scripts/template/demoOne'),
+  },
 };
 
+const config = {
+  folderPath: path.join(`./scripts/output/`),
+  type: 'one', // one oneToOne oneToMany manyToMany
+  isSoftDelete: true, // 是否软删除
+  entityName: 'Test', // 会自动拿开头字母小写当文件名
+  tableName: 'test',
+  fileNamePrefix: '',
+  sub: {
+    entityName: 'Test1',
+    tableName: 'test1',
+    fileNamePrefix: '',
+  },
+};
+config.fileNamePrefix =
+  config.entityName[0].toLowerCase() +
+  config.entityName.slice(1, config.entityName.length);
+config.sub.fileNamePrefix =
+  config.sub.entityName[0].toLowerCase() +
+  config.sub.entityName.slice(1, config.sub.entityName.length);
+console.log(config);
+
 function copyFolderSync(source, target) {
+  fs.rmdirSync(target, { recursive: true });
   // 创建目标文件夹
   fs.mkdirSync(target, { recursive: true });
 
@@ -35,28 +53,31 @@ function copyFolderSync(source, target) {
   });
 }
 
-function renameFilesInFolder(folderPath, name) {
+function renameFilesInFolder(folderPath) {
   // 读取文件夹中的所有文件
   const files = fs.readdirSync(folderPath);
+  console.log('files', files);
 
   // 遍历文件夹中的所有文件
   files.forEach((file) => {
     const filePath = path.join(folderPath, file);
     const fileExt = path.extname(file);
     const fileName = path.basename(file, fileExt);
-    const newName = `${name}${fileExt}`;
+    console.log('fileName', fileName);
 
     // 使用正则表达式将文件名中的目标部分替换为新的名字
-    const newFileName = fileName.replace(/^[^.]+/, name);
+    const newFileName = transJsTemplate(fileName);
 
     // 构造新的文件路径
-    const newFilePath = path.join(folderPath, newFileName + fileExt);
+    const newFilePath = path.join(folderPath, newFileName + '.ts');
 
     // 读取文件内容
     const fileContent = fs.readFileSync(filePath, 'utf-8');
 
     // 进行部分修改替换
-    const modifiedContent = transFileText(fileContent);
+    // const modifiedContent = transFileText(fileContent);
+    const compiledTemplate = template(fileContent);
+    const modifiedContent = compiledTemplate(config);
 
     // 使用 fs.writeFileSync() 方法写入修改后的内容
     fs.writeFileSync(newFilePath, modifiedContent);
@@ -65,17 +86,21 @@ function renameFilesInFolder(folderPath, name) {
     fs.unlinkSync(filePath);
   });
 }
-function transFileText(text) {
-  text = text.replaceAll(originFileConfig.entityName, newFileConfig.entityName);
-  text = text.replaceAll(
-    originFileConfig.fileNamePrefix,
-    newFileConfig.fileNamePrefix,
-  );
-  // 替换变量名
-  return text;
+
+/** 把普通字符串转换为模板  a=1; '${a}' 转成 '1' */
+function transJsTemplate(template) {
+  const result = template.replace(/\${(\w+)}/g, (match, key) => {
+    return eval('config.' + key); // 使用 eval() 函数获取变量的值
+  });
+  return result;
 }
 
-copyFolderSync(originFileConfig.folderPath, newFileConfig.folderPath);
-renameFilesInFolder(newFileConfig.folderPath, newFileConfig.fileNamePrefix);
+copyFolderSync(
+  originFileConfig.folderPaths[config.type],
+  config.folderPath + config.fileNamePrefix,
+);
+renameFilesInFolder(config.folderPath + config.fileNamePrefix);
 
-console.log(`done output targetFolder: ${newFileConfig.folderPath}`);
+console.log(
+  `done output targetFolder: ${config.folderPath}${config.fileNamePrefix}`,
+);
