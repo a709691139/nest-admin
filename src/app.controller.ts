@@ -6,6 +6,7 @@ import { HttpCommonDataProvider } from './common/provider/HttpCommonDataProvider
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { RedisLockService } from 'nestjs-simple-redis-lock';
+import { NotNeedLogin } from './common/decorator/NotNeedLogin';
 
 @ApiTags('app')
 @ApiExtraModels(Pagination, ResponseWrap)
@@ -21,6 +22,7 @@ export class AppController {
 
   count = 0;
   @ApiOperation({ summary: '简介', description: '说明' })
+  @NotNeedLogin()
   @Get('/')
   async getHello() {
     this.httpCommonDataProvider.incrementCounter();
@@ -36,6 +38,7 @@ export class AppController {
   }
 
   @ApiOperation({ summary: '简介', description: '说明' })
+  @NotNeedLogin()
   @Get('/2')
   async getHello2() {
     this.count++;
@@ -46,6 +49,7 @@ export class AppController {
   }
 
   @Get('/redis/set')
+  @NotNeedLogin()
   async redisSet() {
     await this.redis.set('testMap', JSON.stringify({ heh: 1 }), 'EX', 10);
     const data = await this.redis.get('testMap');
@@ -56,16 +60,19 @@ export class AppController {
   }
 
   @Get('/redis/get')
+  @NotNeedLogin()
   async redisGet() {
     return this.redis.get('test');
   }
 
   @Get('/redis/del')
+  @NotNeedLogin()
   async redisDel() {
     return this.redis.del('test');
   }
 
   @Get('/redis/lock')
+  @NotNeedLogin()
   async redisLock() {
     await this.lockService.lock('test1', 2 * 60 * 1000, 100, 10);
     await new Promise((resolve) => setTimeout(resolve, 5000));

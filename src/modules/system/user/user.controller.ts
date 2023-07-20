@@ -43,7 +43,6 @@ export class UserController {
     summary: '分页查询',
     description: '分页查询',
   })
-  @NotNeedLogin()
   async page(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
@@ -67,6 +66,7 @@ export class UserController {
   @Post('/regis')
   @ApiOperation({ summary: '注册用户名' })
   @ApiResponseWrap(User)
+  @NotNeedLogin()
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async regis(@Body() dto: RegisUserDto) {
     const user = await this.userService.create({
@@ -78,6 +78,7 @@ export class UserController {
 
   @Post('/loginByPassword')
   @ApiOperation({ summary: '密码登陆' })
+  @NotNeedLogin()
   @ApiResponseWrap(LoginSuccessResponseDto)
   async loginByPassword(@Body() dto: LoginPasswordUserDto) {
     // 校验图片验证码 TODO
