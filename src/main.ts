@@ -59,11 +59,15 @@ async function bootstrap() {
           default: '001',
         },
       })
-      .addBearerAuth()
-      // .addTag('用户,安全') // 每个tag标签都可以对应着几个@ApiUseTags('用户,安全') 然后被ApiUseTags注释，字符串一致的都会变成同一个标签下的
-      // .setBasePath('http://localhost:5000')
+      .addBearerAuth({
+        type: 'apiKey',
+        name: 'token',
+        in: 'header',
+        scheme: 'token',
+      })
       .build();
     const document = SwaggerModule.createDocument(app, options);
+    document.security = [{ bearer: [] }];
     SwaggerModule.setup(SWAGGER_PATH, app, document);
   }
 

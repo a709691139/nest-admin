@@ -2,10 +2,10 @@ import {
   Body,
   Controller,
   Get,
+  Logger,
   Param,
   Post,
   Query,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -40,6 +40,7 @@ export class UserController {
     summary: '分页查询',
     description: '分页查询',
   })
+  @AuthGuard()
   async page(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
@@ -103,6 +104,7 @@ export class UserController {
   @Post('/logout')
   @ApiOperation({ summary: '退出登陆' })
   async logout() {
+    await this.userAuthService.logout();
     return responseSuccess('');
   }
 
@@ -116,6 +118,7 @@ export class UserController {
   @Get('get')
   @ApiResponseWrap(User)
   async findOne(@Query('id') id: string) {
+    Logger.debug('TokenData', this.httpCommonDataProvider.getTokenData());
     return responseSuccess(this.userService.findOne(id));
   }
 

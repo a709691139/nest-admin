@@ -4,6 +4,7 @@ import {
   ExecutionContext,
   Inject,
   Injectable,
+  Logger,
   Scope,
   createParamDecorator,
 } from '@nestjs/common';
@@ -21,7 +22,6 @@ import {
 @EventSubscriber()
 export class PostSubscriber implements EntitySubscriberInterface {
   constructor(private readonly dataSource: DataSource) {
-    console.log('PostSubscriber, constructor');
     dataSource.subscribers.push(this);
   }
   // @Inject()
@@ -29,14 +29,14 @@ export class PostSubscriber implements EntitySubscriberInterface {
 
   beforeInsert(event: InsertEvent<any>) {
     const { entity } = event;
-    console.log(`BEFORE POST INSERTED: `, entity);
+    Logger.debug(`BEFORE INSERT: `, entity);
   }
 
   afterLoad(entity: any, _event?: LoadEvent<any>) {
-    // console.log('Post afterLoad:');
-    // console.log('Post afterLoad:', entity, _event);
+    // Logger.debug('Post afterLoad:');
+    // Logger.debug('Post afterLoad:', entity, _event);
   }
   beforeTransactionStart(event: TransactionStartEvent) {
-    // console.log('beforeTransactionStart', event);
+    // Logger.debug('beforeTransactionStart', event);
   }
 }

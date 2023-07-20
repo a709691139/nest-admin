@@ -8,12 +8,13 @@ import { SystemModule } from './modules/system/system.module';
 import { PostSubscriber } from '@/provider/EntityListener';
 import { HttpCommonDataProvider } from './provider/HttpCommonDataProvider';
 import { RequestInterceptor } from './provider/RequestInterceptor';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { DemoOneSoftDeleteModule } from './modules/demo/demoOneSoftDelete/demoOneSoftDelete.module';
 import { DemoOneModule } from './modules/demo/demoOne/demoOne.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisLockModule } from 'nestjs-simple-redis-lock';
 import { AuthMiddleware } from './middleWare/AuthMiddleWare';
+import { AuthGuard } from './utils/AuthGuard';
 
 @Module({
   imports: [
@@ -55,6 +56,10 @@ import { AuthMiddleware } from './middleWare/AuthMiddleWare';
     {
       provide: APP_INTERCEPTOR,
       useClass: RequestInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
     PostSubscriber,
   ],

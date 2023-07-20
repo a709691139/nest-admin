@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   FindOptionsWhere,
   Not,
@@ -18,7 +19,6 @@ import {
  * 5、大小查询："lt 100" 中间空格 , 小于查询 lt 100, 小于等于 le 100, 大于 gt 100, 大于等于 ge 100
  */
 export function createQueryWrapper<T>(param: T) {
-  console.log('param', param);
   const data: FindOptionsWhere<T> = {};
   const keys = Object.keys(param);
   const ignoreKeys = ['page', 'pageSize', 'sort', 'order'];
@@ -46,7 +46,6 @@ export function createQueryWrapper<T>(param: T) {
       } else if (/_end$/.test(key)) {
       } else if (/^(le|ge|gt|lt)\s.+/.test(value)) {
         const fnKey = value.slice(0, 2);
-        console.log('fnKey', fnKey);
         const fns = {
           le: LessThanOrEqual,
           ge: MoreThanOrEqual,
@@ -61,6 +60,6 @@ export function createQueryWrapper<T>(param: T) {
       data[key] = value;
     }
   });
-  console.log('createQueryWrapper', data);
+  Logger.debug('createQueryWrapper', createQueryWrapper);
   return data;
 }

@@ -24,6 +24,7 @@ export class UserAuthService {
       withDeleted: false,
     });
     console.log('configService', this.configService.get('appkey'));
+    const seconds = 60 * 60 * 24 * 30;
     const token = jwt.sign(
       {
         userId: user.id,
@@ -31,19 +32,18 @@ export class UserAuthService {
       },
       this.configService.get('appkey'),
       {
-        expiresIn: '30 days',
+        expiresIn: seconds,
       },
     );
-    await this.redis.set(
-      'userToken:' + user.id,
-      token,
-      'EX',
-      60 * 60 * 24 * 30,
-    );
+    await this.redis.set('userToken:' + user.id, token, 'EX', seconds);
     return {
       userId: user.id,
       token,
       userInfo: user,
     };
+  }
+
+  async logout() {
+    await this.redis.del('userToken:*');
   }
 }

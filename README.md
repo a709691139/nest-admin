@@ -22,6 +22,11 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 - 安装 redis
 - 配置好`config/development.ts`
 
+## 注意事项
+
+- nestjs 全局 provider 里 不能引入 Scope.REQUEST 的 provider
+  如全局监听里，不能引入 HttpCommonDataProvider
+
 ## 分页查询，前端可自定义参数条件
 
 - 1、支持模糊查询 前后带\*
@@ -94,6 +99,18 @@ async regis(@Body() dto: RegisUserDto) {
 - demoOneToOne 一对一表
 - demoOneToMany 一对多表
 - demoManyToMany 多对多
+
+#### 生成 demo 模板
+
+方法，先编写好模板，然后用`lodash/template`库做文本替换
+
+```js
+const _ = require('lodash');
+const templateString = '<%= age > 18 ? "Adult" : "Minor" %>';
+const compiledTemplate = _.template(templateString);
+const result = compiledTemplate({ age: 25 });
+console.log(result); // 输出: Adult
+```
 
 ### 登陆注册
 
