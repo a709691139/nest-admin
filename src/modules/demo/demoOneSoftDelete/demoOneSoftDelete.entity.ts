@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { CommonSoftDeleteEntity } from '@/dto/CommonEntity';
+import { CommonSoftDeleteEntity } from '@/common/dto/CommonEntity';
 
 @Entity()
 export class DemoOneSoftDelete extends CommonSoftDeleteEntity {

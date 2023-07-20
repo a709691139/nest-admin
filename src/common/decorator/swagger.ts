@@ -1,4 +1,4 @@
-import { Pagination, ResponseWrap } from '@/dto/ResponseWrap';
+import { Pagination, ResponseWrap } from '@/common/dto/ResponseWrap';
 import { Type, applyDecorators } from '@nestjs/common';
 import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 

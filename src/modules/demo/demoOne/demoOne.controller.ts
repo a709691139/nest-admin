@@ -15,9 +15,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Pagination } from '@/dto/ResponseWrap';
-import { ApiPaginatedResponse, ApiResponseWrap } from '@/utils/swagger';
-import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { Pagination } from '@/common/dto/ResponseWrap';
+import {
+  ApiPaginatedResponse,
+  ApiResponseWrap,
+} from '@/common/decorator/swagger';
+import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
 

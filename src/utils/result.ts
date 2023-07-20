@@ -1,4 +1,4 @@
-import { ResponseWrap } from '@/dto/ResponseWrap';
+import { ResponseWrap } from '@/common/dto/ResponseWrap';
 
 export function responseSuccess<T>(
   data: T,

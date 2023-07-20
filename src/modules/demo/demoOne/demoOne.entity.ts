@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { DateColumn, DateTimeColumn } from '@/utils/transform';
-import { CommonEntity } from '@/dto/CommonEntity';
+import { CommonEntity } from '@/common/dto/CommonEntity';
 @Entity()
 export class DemoOne extends CommonEntity {
   @ApiProperty({ required: false })

@@ -5,16 +5,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import customConfig from '@/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SystemModule } from './modules/system/system.module';
-import { PostSubscriber } from '@/provider/EntityListener';
-import { HttpCommonDataProvider } from './provider/HttpCommonDataProvider';
-import { RequestInterceptor } from './provider/RequestInterceptor';
+import { PostSubscriber } from '@/common/provider/EntityListener';
+import { HttpCommonDataProvider } from './common/provider/HttpCommonDataProvider';
+import { RequestInterceptor } from './common/provider/RequestInterceptor';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { DemoOneSoftDeleteModule } from './modules/demo/demoOneSoftDelete/demoOneSoftDelete.module';
 import { DemoOneModule } from './modules/demo/demoOne/demoOne.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisLockModule } from 'nestjs-simple-redis-lock';
-import { AuthMiddleware } from './middleWare/AuthMiddleWare';
-import { AuthGuard } from './utils/AuthGuard';
+import { AuthMiddleware } from './common/middleware/AuthMiddleware';
+import { AuthGuard } from './common/provider/AuthGuard';
 
 @Module({
   imports: [

@@ -1,5 +1,5 @@
 import { DemoOneSoftDelete } from '@/modules/demo/demoOneSoftDelete/demoOneSoftDelete.entity';
-import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import {
   ExecutionContext,
   Inject,

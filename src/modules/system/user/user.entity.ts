@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { DateColumn, DateTimeColumn } from '@/utils/transform';
-import { CommonSoftDeleteEntity } from '@/dto/CommonEntity';
+import { CommonSoftDeleteEntity } from '@/common/dto/CommonEntity';
 import * as bcryptjs from 'bcryptjs';
 
 @Entity({ name: 'sys_user' })

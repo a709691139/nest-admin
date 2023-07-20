@@ -1,5 +1,5 @@
-import { TokenData } from '@/dto/TokenData';
-import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { TokenData } from '@/common/dto/TokenData';
+import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import {
   Injectable,
@@ -24,14 +24,15 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext) {
-    const authRequired = this.reflector.get<boolean[]>(
-      'authRequired',
+    const notNeedLogin = this.reflector.get<boolean>(
+      'notNeedLogin',
       context.getHandler(),
     );
+    // TODO 获取角色判断权限
     // const roles = this.reflector.get<string[]>('roles', context.getHandler());
     // const request = context.switchToHttp().getRequest();
     // throw new UnauthorizedException();
-    if (authRequired) {
+    if (!notNeedLogin) {
       const request = context.switchToHttp().getRequest();
       const token = request?.headers?.token;
       if (!token) {

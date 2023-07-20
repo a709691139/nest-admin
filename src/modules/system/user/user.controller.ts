@@ -12,9 +12,12 @@ import {
 import { UserService } from './user.service';
 import { User } from './user.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Pagination } from '@/dto/ResponseWrap';
-import { ApiPaginatedResponse, ApiResponseWrap } from '@/utils/swagger';
-import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { Pagination } from '@/common/dto/ResponseWrap';
+import {
+  ApiPaginatedResponse,
+  ApiResponseWrap,
+} from '@/common/decorator/swagger';
+import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
 import {
   LoginPasswordUserDto,
@@ -22,7 +25,7 @@ import {
   LoginSuccessResponseDto,
 } from './user.dto';
 import { responseError, responseSuccess } from '@/utils/result';
-import { AuthGuard } from '@/utils/UserGuard';
+import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { UserAuthService } from './userAuth.service';
 
 @ApiTags('sys_user')
@@ -40,7 +43,7 @@ export class UserController {
     summary: '分页查询',
     description: '分页查询',
   })
-  @AuthGuard()
+  @NotNeedLogin()
   async page(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,

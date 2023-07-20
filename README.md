@@ -114,14 +114,12 @@ console.log(result); // 输出: Adult
 
 ### 登陆注册
 
+默认全部接口都需要校验登陆，如不需要就加个`@NotNeedLogin()`
+
 - 验证码
 - 登陆
 - 注册
 - 怎么添加 token 验证+swagger
-
-```ts
-@UseGuards(AuthGuard)
-```
 
 ### 表单
 

@@ -3,7 +3,7 @@ import { DemoOneSoftDeleteController } from './demoOneSoftDelete.controller';
 import { DemoOneSoftDeleteService } from './demoOneSoftDelete.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DemoOneSoftDelete } from './demoOneSoftDelete.entity';
-import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DemoOneSoftDelete])],

@@ -3,7 +3,7 @@ import { DemoOneController } from './demoOne.controller';
 import { DemoOneService } from './demoOne.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DemoOne } from './demoOne.entity';
-import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DemoOne])],

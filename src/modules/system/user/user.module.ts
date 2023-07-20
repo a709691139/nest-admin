@@ -3,7 +3,7 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { UserAuthService } from './userAuth.service';
 
 @Module({

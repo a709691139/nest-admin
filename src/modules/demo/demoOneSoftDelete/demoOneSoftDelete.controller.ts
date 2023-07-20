@@ -2,9 +2,12 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { DemoOneSoftDeleteService } from './demoOneSoftDelete.service';
 import { DemoOneSoftDelete } from './demoOneSoftDelete.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ApiPaginatedResponse, ApiResponseWrap } from '@/utils/swagger';
-import { Pagination } from '@/dto/ResponseWrap';
-import { HttpCommonDataProvider } from '@/provider/HttpCommonDataProvider';
+import {
+  ApiPaginatedResponse,
+  ApiResponseWrap,
+} from '@/common/decorator/swagger';
+import { Pagination } from '@/common/dto/ResponseWrap';
+import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
 

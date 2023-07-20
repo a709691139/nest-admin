@@ -1,4 +1,4 @@
-import { TokenData } from '@/dto/TokenData';
+import { TokenData } from '@/common/dto/TokenData';
 import { Inject, Injectable, Logger, Scope } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { REQUEST } from '@nestjs/core';

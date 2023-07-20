@@ -1,8 +1,8 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiExtraModels, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Pagination, ResponseWrap } from './dto/ResponseWrap';
-import { HttpCommonDataProvider } from './provider/HttpCommonDataProvider';
+import { Pagination, ResponseWrap } from './common/dto/ResponseWrap';
+import { HttpCommonDataProvider } from './common/provider/HttpCommonDataProvider';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { RedisLockService } from 'nestjs-simple-redis-lock';

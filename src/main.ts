@@ -11,17 +11,18 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { join } from 'path';
-import { GlobalExceptionFilter } from './utils/global-exception.filter';
+import { GlobalExceptionFilter } from './common/filter/GlobalExceptionFilter';
 
 const PREFIX = '/api';
 const SWAGGER_PATH = '/swagger';
+const STATIC_ASSETS_PATH = '/static';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix(PREFIX);
   app.enableCors();
   app.useStaticAssets(join(__dirname, '..', 'public'), {
-    prefix: '/static/',
+    prefix: STATIC_ASSETS_PATH,
   });
   app.useGlobalPipes(
     new ValidationPipe({
@@ -76,7 +77,9 @@ async function bootstrap() {
     Logger.debug(`
     env: ${process.env.NODE_ENV}
     启动成功：http://localhost:${port}${PREFIX}
-    API 文档：http://localhost:${port}${SWAGGER_PATH}`);
+    API 文档：http://localhost:${port}${SWAGGER_PATH}
+    静态文件：http://localhost:${port}${STATIC_ASSETS_PATH}
+    `);
   });
 }
 bootstrap();

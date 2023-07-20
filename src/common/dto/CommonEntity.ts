@@ -6,7 +6,7 @@ import {
   Entity,
   UpdateDateColumn,
 } from 'typeorm';
-import { DateTimeTransformer } from '../utils/transform';
+import { DateTimeTransformer } from '../../utils/transform';
 
 /**
  * 通用表字段
