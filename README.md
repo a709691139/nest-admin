@@ -95,7 +95,8 @@ async regis(@Body() dto: RegisUserDto) {
 ### demo 例子
 
 - demoOne 单表查询增删改查
-- demoOneSoftDelete 单表查询增删改查-软删除，每个表都可以选加入 createdAt createdBy deletedAt
+- demoOneSoftDelete 单表查询增删改查-软删除，deletedAt
+  entity 加入 CommonSoftDeleteEntity，删除用 repository.softRemove
 - demoOneToOne 一对一表
 - demoOneToMany 一对多表
 - demoManyToMany 多对多

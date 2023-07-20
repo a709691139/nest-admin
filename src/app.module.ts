@@ -9,7 +9,6 @@ import { PostSubscriber } from '@/common/provider/EntityListener';
 import { HttpCommonDataProvider } from './common/provider/HttpCommonDataProvider';
 import { RequestInterceptor } from './common/provider/RequestInterceptor';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { DemoOneSoftDeleteModule } from './modules/demo/demoOneSoftDelete/demoOneSoftDelete.module';
 import { DemoOneModule } from './modules/demo/demoOne/demoOne.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisLockModule } from 'nestjs-simple-redis-lock';
@@ -47,7 +46,6 @@ import { AuthGuard } from './common/provider/AuthGuard';
     RedisLockModule.register({}),
     SystemModule,
     DemoOneModule,
-    DemoOneSoftDeleteModule,
   ],
   controllers: [AppController],
   providers: [
