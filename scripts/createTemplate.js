@@ -11,11 +11,13 @@ const originFileConfig = {
 const config = {
   folderPath: path.join(`./scripts/output/`),
   type: 'one', // one oneToOne oneToMany manyToMany
-  isSoftDelete: true, // 是否软删除
-  entityName: 'Test', // 会自动拿开头字母小写当文件名
-  tableName: 'test',
-  fileNamePrefix: '',
+  isSoftDelete: false, // 是否软删除
+  name: '菜单权限表',
+  entityName: 'Permission', // 会自动拿开头字母小写当文件名
+  tableName: 'sys_permission',
+  fileNamePrefix: '', // 不用填
   sub: {
+    name: '用户表',
     entityName: 'Test1',
     tableName: 'test1',
     fileNamePrefix: '',
@@ -30,7 +32,7 @@ config.sub.fileNamePrefix =
 console.log(config);
 
 function copyFolderSync(source, target) {
-  fs.rmdirSync(target, { recursive: true });
+  fs.existsSync(target) && fs.rmdirSync(target, { recursive: true });
   // 创建目标文件夹
   fs.mkdirSync(target, { recursive: true });
 

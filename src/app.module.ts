@@ -14,6 +14,8 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisLockModule } from 'nestjs-simple-redis-lock';
 import { AuthMiddleware } from './common/middleware/AuthMiddleware';
 import { AuthGuard } from './common/provider/AuthGuard';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksService } from './common/schedule/task.service';
 
 @Module({
   imports: [
@@ -45,6 +47,7 @@ import { AuthGuard } from './common/provider/AuthGuard';
     }),
     RedisLockModule.register({}),
     SystemModule,
+    ScheduleModule.forRoot(),
     DemoOneModule,
   ],
   controllers: [AppController],
@@ -60,6 +63,7 @@ import { AuthGuard } from './common/provider/AuthGuard';
       useClass: AuthGuard,
     },
     PostSubscriber,
+    TasksService,
   ],
 })
 export class AppModule {

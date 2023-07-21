@@ -11,7 +11,7 @@ import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider
 import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
 
-@ApiTags('<%= fileNamePrefix  %>')
+@ApiTags('<%= name  %> <%= fileNamePrefix  %>')
 @Controller('<%= fileNamePrefix  %>')
 export class <%= entityName %>Controller {
   constructor(
@@ -38,7 +38,7 @@ export class <%= entityName %>Controller {
       pageSize,
       {
         where: createQueryWrapper(query),
-        <%= isSoftDelete? 'withDeleted,' : '' %>
+        <%= isSoftDelete? "withDeleted: withDeleted === '1'," : "" %>
       },
     );
     const pagination: Pagination<<%= entityName %>> = {
@@ -54,23 +54,23 @@ export class <%= entityName %>Controller {
   @ApiResponseWrap(<%= entityName %>)
   async create(@Body() dto: <%= entityName %>) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
-    return responseSuccess(this.<%= fileNamePrefix  %>Service.create(dto));
+    return responseSuccess(await this.<%= fileNamePrefix  %>Service.create(dto));
   }
 
   @Get('get')
   @ApiResponseWrap(<%= entityName %>)
   async findOne(@Query('id') id: string) {
-    return responseSuccess(this.<%= fileNamePrefix  %>Service.findOne(id));
+    return responseSuccess(await this.<%= fileNamePrefix  %>Service.findOne(id));
   }
 
   @Post('/update')
   @ApiResponseWrap(<%= entityName %>)
   async update(@Body() dto: <%= entityName %>) {
-    return responseSuccess(this.<%= fileNamePrefix  %>Service.update(dto.id, dto));
+    return responseSuccess(await this.<%= fileNamePrefix  %>Service.update(dto.id, dto));
   }
 
   @Post('/remove/:id')
   async remove(@Param('id') id: string) {
-    return responseSuccess(this.<%= fileNamePrefix  %>Service.remove(id));
+    return responseSuccess(await this.<%= fileNamePrefix  %>Service.remove(id));
   }
 }

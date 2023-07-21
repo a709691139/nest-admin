@@ -4,7 +4,10 @@ import { Exclude } from 'class-transformer';
 import { DateColumn, DateTimeColumn } from '@/utils/transform';
 import { CommonEntity, CommonSoftDeleteEntity } from '@/common/dto/CommonEntity';
 
-@Entity()
+/**
+  <%= name %>
+*/
+@Entity({ name: '<%= tableName %>' })
 export class <%= entityName %> extends <%= isSoftDelete? 'CommonSoftDeleteEntity' :'CommonEntity' %> {
   @ApiProperty({ required: false })
   @PrimaryGeneratedColumn('uuid')

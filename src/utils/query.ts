@@ -20,6 +20,9 @@ import {
  */
 export function createQueryWrapper<T>(param: T) {
   const data: FindOptionsWhere<T> = {};
+  if (!param) {
+    return data;
+  }
   const keys = Object.keys(param);
   const ignoreKeys = ['page', 'pageSize', 'sort', 'order'];
   keys.forEach((key) => {

@@ -11,6 +11,9 @@ import { DateColumn, DateTimeColumn } from '@/utils/transform';
 import { CommonSoftDeleteEntity } from '@/common/dto/CommonEntity';
 import * as bcryptjs from 'bcryptjs';
 
+/**
+ * 系统用户
+ */
 @Entity({ name: 'sys_user' })
 @Unique(['workNo', 'tenantId'])
 @Unique(['username', 'tenantId'])

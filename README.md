@@ -121,6 +121,14 @@ console.log(result); // 输出: Adult
 - 登陆
 - 注册
 - 怎么添加 token 验证+swagger
+- 校验权限
+
+```ts
+// 添加
+@Permissions(['user:add'])
+```
+
+### 
 
 ### 表单
 

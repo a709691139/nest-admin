@@ -9,6 +9,8 @@ import {
   Logger,
   Inject,
   Scope,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
@@ -28,10 +30,7 @@ export class AuthGuard implements CanActivate {
       'notNeedLogin',
       context.getHandler(),
     );
-    // TODO 获取角色判断权限
-    // const roles = this.reflector.get<string[]>('roles', context.getHandler());
-    // const request = context.switchToHttp().getRequest();
-    // throw new UnauthorizedException();
+
     if (!notNeedLogin) {
       const request = context.switchToHttp().getRequest();
       const token = request?.headers?.token;
@@ -54,6 +53,18 @@ export class AuthGuard implements CanActivate {
       const sessionToken = await this.redis.get('userToken:' + userId);
       if (token !== sessionToken) {
         throw new UnauthorizedException('token失效');
+      }
+
+      // TODO 获取角色判断权限
+      const permissions = this.reflector.get<string[]>(
+        'permissions',
+        context.getHandler(),
+      );
+      if (permissions?.length) {
+        // const request = context.switchToHttp().getRequest();
+        const { roleIds } = tokenData;
+        // 读取系统里存储的角色列表和权限列表
+        throw new HttpException('接口权限不足', HttpStatus.FORBIDDEN);
       }
     }
     return true;

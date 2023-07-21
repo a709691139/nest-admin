@@ -28,7 +28,7 @@ import { responseError, responseSuccess } from '@/utils/result';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { UserAuthService } from './userAuth.service';
 
-@ApiTags('sys_user')
+@ApiTags('系统用户 sys_user')
 @Controller('sys_user')
 export class UserController {
   constructor(
@@ -96,7 +96,7 @@ export class UserController {
       return responseError(errMsg);
     }
     if (user.status === '0') {
-      return responseSuccess('该用户已被禁用');
+      return responseError('该用户已被禁用');
     }
     if (!user.id || !user.validatePassword(dto.password)) {
       return responseError(errMsg);
@@ -116,23 +116,23 @@ export class UserController {
   @ApiResponseWrap(User)
   async create(@Body() dto: User) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
-    return responseSuccess(this.userService.create(dto));
+    return responseSuccess(await this.userService.create(dto));
   }
 
   @Get('get')
   @ApiResponseWrap(User)
   async findOne(@Query('id') id: string) {
     Logger.debug('TokenData', this.httpCommonDataProvider.getTokenData());
-    return responseSuccess(this.userService.findOne(id));
+    return responseSuccess(await this.userService.findOne(id));
   }
 
   @Post('/update')
   async update(@Body() dto: User) {
-    return responseSuccess(this.userService.update(dto.id, dto));
+    return responseSuccess(await this.userService.update(dto.id, dto));
   }
 
   @Post('/remove/:id')
   async remove(@Param('id') id: string) {
-    return responseSuccess(this.userService.remove(id));
+    return responseSuccess(await this.userService.remove(id));
   }
 }

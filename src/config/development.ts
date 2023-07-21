@@ -11,7 +11,6 @@ const data = {
     username: 'root',
     password: 'root',
     database: 'nestjs',
-    timezone: 'Asia/Shanghai',
     charset: 'utf8mb4',
     entities: ['**/*.entity.js'],
     synchronize: true,

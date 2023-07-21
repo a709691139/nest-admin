@@ -1,14 +1,4 @@
-import { DemoOneSoftDelete } from '@/modules/demo/demoOneSoftDelete/demoOneSoftDelete.entity';
-import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
-import {
-  ExecutionContext,
-  Inject,
-  Injectable,
-  Logger,
-  Scope,
-  createParamDecorator,
-} from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
 import {
   EventSubscriber,
   EntitySubscriberInterface,

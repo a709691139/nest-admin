@@ -4,6 +4,11 @@ export class ResponseWrap<T> {
   @ApiProperty()
   data: T;
 
+  /**
+   * 0 成功
+   * 401 未登陆
+   * 403 接口权限不足
+   */
   @ApiProperty()
   status: number;
 
