@@ -32,10 +32,7 @@ async function bootstrap() {
         );
         const message = messages.join(', ');
         throw new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            msg: 'Validation failed ' + message,
-          },
+          'Validation failed：' + message,
           HttpStatus.BAD_REQUEST,
         );
       },
