@@ -44,6 +44,18 @@ export class HttpCommonDataProvider {
     if (token) {
       let tokenData = {} as TokenData;
       try {
+        if (
+          token === 'admin' &&
+          ['development', 'test'].includes(this.configService.get('NODE_ENV'))
+        ) {
+          // 开发测试环境默认填admin全通过
+          this.setTokenData({
+            userId: 'admin',
+            username: 'admin',
+            roleIds: ['admin'],
+          });
+          return;
+        }
         tokenData = jwt.verify(token, this.configService.get('appkey')) as any;
         this.setTokenData(tokenData);
         console.log('initTokenData', tokenData);

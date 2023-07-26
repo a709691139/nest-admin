@@ -37,11 +37,19 @@ export class AuthGuard implements CanActivate {
       if (!token) {
         throw new UnauthorizedException('未登陆');
       }
+
       // 解密数据
       let tokenData = {} as TokenData;
+      if (
+        token === 'admin' &&
+        ['development', 'test'].includes(this.configService.get('NODE_ENV'))
+      ) {
+        // 开发测试环境默认填admin全通过
+        return true;
+      }
       try {
         tokenData = jwt.verify(token, this.configService.get('appkey')) as any;
-        Logger.debug('tokenData', tokenData);
+        // Logger.debug('', tokenData);
       } catch (error) {
         Logger.debug(error.message);
         throw new UnauthorizedException('token失效');

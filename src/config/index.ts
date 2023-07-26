@@ -9,4 +9,6 @@ const configs = {
 };
 const env = process.env.NODE_ENV || 'development';
 
-export default () => configs[env];
+export default () => {
+  return { ...configs[env], ...process.env };
+};

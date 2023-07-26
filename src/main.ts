@@ -62,6 +62,7 @@ async function bootstrap() {
         name: 'token',
         in: 'header',
         scheme: 'token',
+        description: '开发测试环境直接传admin可免登陆',
       })
       .build();
     const document = SwaggerModule.createDocument(app, options);
