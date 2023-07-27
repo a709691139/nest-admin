@@ -27,6 +27,7 @@ import {
 import { responseError, responseSuccess } from '@/utils/result';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { UserAuthService } from './userAuth.service';
+import { NeedPermissions } from '@/common/decorator/NeedPermissions';
 
 @ApiTags('系统用户 sys_user')
 @Controller('sys_user')
@@ -38,6 +39,7 @@ export class UserController {
   ) {}
 
   @Get('/page')
+  @NeedPermissions('sys_user:page')
   @ApiPaginatedResponse(User)
   @ApiOperation({
     summary: '分页查询',
@@ -113,6 +115,7 @@ export class UserController {
   }
 
   @Post('/create')
+  @NeedPermissions('sys_user:create')
   @ApiResponseWrap(User)
   async create(@Body() dto: User) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
@@ -127,12 +130,30 @@ export class UserController {
   }
 
   @Post('/update')
+  @NeedPermissions('sys_user:update')
   async update(@Body() dto: User) {
     return responseSuccess(await this.userService.update(dto.id, dto));
   }
 
   @Post('/remove/:id')
+  @NeedPermissions('sys_user:remove')
   async remove(@Param('id') id: string) {
     return responseSuccess(await this.userService.remove(id));
+  }
+
+  @Post('/updateMyInfo')
+  @ApiOperation({ summary: '更新个人基础资料TODO' })
+  @ApiResponseWrap()
+  @NotNeedLogin()
+  async updateMyInfo(@Body() dto) {
+    // TODO
+  }
+
+  @Post('/updateMyPassoword')
+  @ApiOperation({ summary: '修改个人密码TODO' })
+  @ApiResponseWrap()
+  @NotNeedLogin()
+  async updateMyPassoword(@Body() dto) {
+    // TODO
   }
 }

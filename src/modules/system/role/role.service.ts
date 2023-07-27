@@ -28,12 +28,19 @@ export class RoleService {
   }
 
   async findOne(id: string): Promise<Role> {
-    return this.roleRepository.findOne({ where: { id }, withDeleted: true });
+    return this.roleRepository.findOne({
+      where: { id },
+      relations: ['permissions'],
+      withDeleted: true,
+    });
   }
 
   async update(id: string, entityData: Partial<Role>): Promise<Role> {
-    await this.roleRepository.update(id, entityData);
-    return this.roleRepository.findOne({ where: { id } });
+    await this.roleRepository.save(entityData);
+    return this.roleRepository.findOne({
+      where: { id },
+      relations: ['permissions'],
+    });
   }
 
   async remove(id: string): Promise<void> {

@@ -9,5 +9,6 @@ import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider
   imports: [TypeOrmModule.forFeature([Permission])],
   controllers: [PermissionController],
   providers: [PermissionService, HttpCommonDataProvider],
+  exports: [PermissionService],
 })
 export class PermissionModule {}

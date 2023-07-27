@@ -34,7 +34,16 @@ export const ApiPaginatedResponse = <TModel extends Type<any>>(
   );
 };
 
-export const ApiResponseWrap = <TModel extends Type<any>>(model: TModel) => {
+export const ApiResponseWrap = <TModel extends Type<any>>(model?: TModel) => {
+  if (!model) {
+    return applyDecorators(
+      ApiOkResponse({
+        schema: {
+          $ref: getSchemaPath(ResponseWrap),
+        },
+      }),
+    );
+  }
   return applyDecorators(
     ApiExtraModels(model),
     ApiOkResponse({

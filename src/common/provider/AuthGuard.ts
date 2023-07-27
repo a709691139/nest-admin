@@ -70,6 +70,7 @@ export class AuthGuard implements CanActivate {
       );
       if (permissions?.length) {
         // const request = context.switchToHttp().getRequest();
+        // TODO 获取角色
         const { roleIds } = tokenData;
         // 读取系统里存储的角色列表和权限列表
         throw new HttpException('接口权限不足', HttpStatus.FORBIDDEN);

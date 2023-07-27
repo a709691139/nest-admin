@@ -36,7 +36,7 @@ export class Permission extends CommonEntity {
     description: '描述',
     required: false,
   })
-  @Column('varchar', { length: 255, comment: '描述' })
+  @Column('varchar', { length: 255, comment: '描述', nullable: true })
   desc: string;
 
   /** 路径 */
@@ -44,7 +44,7 @@ export class Permission extends CommonEntity {
     description: '路径',
     required: false,
   })
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { length: 255, nullable: true })
   url: string;
 
   /** 前端组件名 */
@@ -52,7 +52,7 @@ export class Permission extends CommonEntity {
     description: '前端组件名',
     required: false,
   })
-  @Column('varchar', { length: 255, comment: '前端组件名' })
+  @Column('varchar', { length: 255, comment: '前端组件名', nullable: true })
   component: string;
 
   /** 菜单类型 (0:一级菜单; 1:子菜单:2:按钮权限) */
@@ -63,6 +63,7 @@ export class Permission extends CommonEntity {
   @Column('varchar', {
     length: 1,
     comment: '菜单类型 (0:一级菜单; 1:子菜单:2:按钮权限)',
+    default: '0',
   })
   menuType: string;
 
@@ -71,7 +72,7 @@ export class Permission extends CommonEntity {
     description: '菜单权限编码',
     required: false,
   })
-  @Column('varchar', { length: 255, comment: '菜单权限编码' })
+  @Column('varchar', { length: 255, comment: '菜单权限编码', nullable: true })
   perms: string;
 
   /** 菜单排序 */
@@ -79,7 +80,7 @@ export class Permission extends CommonEntity {
     description: '菜单排序',
     required: false,
   })
-  @Column('double', { comment: '菜单排序' })
+  @Column('double', { comment: '菜单排序', nullable: true, default: 1 })
   sortNo: number;
 
   /** 菜单图标 */
@@ -87,7 +88,7 @@ export class Permission extends CommonEntity {
     description: '菜单图标',
     required: false,
   })
-  @Column('varchar', { length: 100, comment: '菜单图标' })
+  @Column('varchar', { length: 100, comment: '菜单图标', nullable: true })
   icon: string;
 
   /** 是否缓存路由 */
@@ -95,7 +96,7 @@ export class Permission extends CommonEntity {
     description: '是否缓存路由',
     required: false,
   })
-  @Column('varchar', { length: 1, comment: '是否缓存路由' })
+  @Column('varchar', { length: 1, comment: '是否缓存路由', default: '0' })
   isKeepAlive: string;
 
   /** 是否隐藏路由 */
@@ -103,6 +104,6 @@ export class Permission extends CommonEntity {
     description: '是否隐藏路由',
     required: false,
   })
-  @Column('varchar', { length: 1, comment: '是否隐藏路由' })
+  @Column('varchar', { length: 1, comment: '是否隐藏路由', default: '0' })
   isHidden: string;
 }

@@ -37,7 +37,7 @@ export class Role extends CommonSoftDeleteEntity {
     description: '编码',
     required: false,
   })
-  @Column('varchar', { length: 32, nullable: false })
+  @Column('varchar', { length: 32, nullable: false, unique: true })
   code: string;
 
   /** 描述 */
@@ -52,6 +52,7 @@ export class Role extends CommonSoftDeleteEntity {
   @ApiProperty({
     description: '菜单权限列表',
     required: false,
+    type: [Permission],
   })
   @ManyToMany(() => Permission)
   @JoinTable({

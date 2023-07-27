@@ -27,11 +27,21 @@ export class PermissionService {
     });
   }
 
-  async findOne(id: string): Promise<Permission> {
-    return this.permissionRepository.findOne({ where: { id }, withDeleted: true });
+  async findAll(options?: FindManyOptions<Permission>) {
+    return this.permissionRepository.find(options);
   }
 
-  async update(id: string, entityData: Partial<Permission>): Promise<Permission> {
+  async findOne(id: string): Promise<Permission> {
+    return this.permissionRepository.findOne({
+      where: { id },
+      withDeleted: true,
+    });
+  }
+
+  async update(
+    id: string,
+    entityData: Partial<Permission>,
+  ): Promise<Permission> {
     await this.permissionRepository.update(id, entityData);
     return this.permissionRepository.findOne({ where: { id } });
   }

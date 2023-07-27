@@ -124,11 +124,11 @@ console.log(result); // 输出: Adult
 - 校验权限
 
 ```ts
-// 添加
-@Permissions(['user:add'])
+// 添加，传多个就需要有其中一个权限
+@Permissions(['user:add']) //
 ```
 
-### 
+###
 
 ### 表单
 

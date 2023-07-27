@@ -4,9 +4,10 @@ import { RoleService } from './role.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Role } from './role.entity';
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
+import { PermissionModule } from '../permission/permission.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Role])],
+  imports: [TypeOrmModule.forFeature([Role]), PermissionModule],
   controllers: [RoleController],
   providers: [RoleService, HttpCommonDataProvider],
 })
