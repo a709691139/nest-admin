@@ -23,6 +23,9 @@ import {
   LoginPasswordUserDto,
   RegisUserDto,
   LoginSuccessResponseDto,
+  ResetUserPasswordDto,
+  UpdateMyInfoDto,
+  UpdateMyPassoword,
 } from './user.dto';
 import { responseError, responseSuccess } from '@/utils/result';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
@@ -100,7 +103,10 @@ export class UserController {
     if (user.status === '0') {
       return responseError('该用户已被禁用');
     }
-    if (!user.id || !user.validatePassword(dto.password)) {
+    if (
+      !user.id ||
+      !this.userAuthService.validateCryptPassword(dto.password, user.password)
+    ) {
       return responseError(errMsg);
     }
     const data = await this.userAuthService.loginSuccess(user.id);
@@ -141,19 +147,37 @@ export class UserController {
     return responseSuccess(await this.userService.remove(id));
   }
 
+  @Post('/resetUserPassword')
+  @ApiOperation({ summary: '重置用户密码' })
+  @NeedPermissions('sys_user:reset_user_password')
+  async resetUserPassword(@Body() dto: ResetUserPasswordDto) {
+    await this.userAuthService.resetUserPassword(dto.userId, dto.password);
+    return responseSuccess();
+  }
+
   @Post('/updateMyInfo')
-  @ApiOperation({ summary: '更新个人基础资料TODO' })
+  @ApiOperation({ summary: '更新个人基础资料' })
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   @ApiResponseWrap()
-  @NotNeedLogin()
-  async updateMyInfo(@Body() dto) {
-    // TODO
+  async updateMyInfo(@Body() dto: UpdateMyInfoDto) {
+    const userId = this.httpCommonDataProvider.getTokenData().userId;
+    return responseSuccess(await this.userService.update(userId, dto));
   }
 
   @Post('/updateMyPassoword')
-  @ApiOperation({ summary: '修改个人密码TODO' })
+  @ApiOperation({ summary: '修改个人密码' })
   @ApiResponseWrap()
-  @NotNeedLogin()
-  async updateMyPassoword(@Body() dto) {
-    // TODO
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async updateMyPassoword(@Body() dto: UpdateMyPassoword) {
+    const userId = this.httpCommonDataProvider.getTokenData().userId;
+    const isValid = await this.userAuthService.checkIsValidPassword(
+      userId,
+      dto.oldPassoword,
+    );
+    if (!isValid) {
+      return responseError('当前密码不正确');
+    }
+    await this.userAuthService.resetUserPassword(userId, dto.newPassword);
+    return responseSuccess();
   }
 }

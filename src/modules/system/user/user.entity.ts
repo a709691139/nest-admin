@@ -118,12 +118,10 @@ export class User extends CommonSoftDeleteEntity {
 
   @BeforeInsert()
   beforeInsertPassword() {
-    const salt = bcryptjs.genSaltSync(10);
-    const password = bcryptjs.hashSync(this.password, salt);
-    this.password = password;
-  }
-
-  validatePassword(password: string) {
-    return bcryptjs.compareSync(password, this.password);
+    if (this.password) {
+      const salt = bcryptjs.genSaltSync(10);
+      const password = bcryptjs.hashSync(this.password, salt);
+      this.password = password;
+    }
   }
 }

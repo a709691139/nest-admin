@@ -6,6 +6,7 @@ import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
+import * as bcryptjs from 'bcryptjs';
 
 @Injectable()
 export class UserAuthService {
@@ -45,5 +46,34 @@ export class UserAuthService {
 
   async logout() {
     await this.redis.del('userToken:*');
+  }
+
+  /** 密码加密 */
+  encryptPassword(originPassword) {
+    const salt = bcryptjs.genSaltSync(10);
+    const password = bcryptjs.hashSync(originPassword, salt);
+    return password;
+  }
+
+  /** 对比原加密密码 */
+  validateCryptPassword(originPassword: string, password: string) {
+    return bcryptjs.compareSync(originPassword, password);
+  }
+
+  async checkIsValidPassword(
+    userId: string,
+    originPassword: string,
+  ): Promise<boolean> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      select: ['password'],
+    });
+    return this.validateCryptPassword(originPassword, user.password);
+  }
+
+  async resetUserPassword(userId: string, originPassword: string) {
+    return await this.userRepository.update(userId, {
+      password: this.encryptPassword(originPassword),
+    });
   }
 }
