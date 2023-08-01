@@ -72,3 +72,36 @@ export const ApiResponseWrap = <TModel extends Type<any>>(model?: TModel) => {
     }),
   );
 };
+
+/** 数组类型 */
+export const ApiResponseArrayWrap = <TModel extends Type<any>>(
+  model?: TModel,
+) => {
+  if (!model) {
+    return applyDecorators(
+      ApiOkResponse({
+        schema: {
+          $ref: getSchemaPath(ResponseWrap),
+        },
+      }),
+    );
+  }
+  return applyDecorators(
+    ApiExtraModels(model),
+    ApiOkResponse({
+      schema: {
+        allOf: [
+          { $ref: getSchemaPath(ResponseWrap) },
+          {
+            properties: {
+              data: {
+                type: 'array',
+                items: { $ref: getSchemaPath(model) },
+              },
+            },
+          },
+        ],
+      },
+    }),
+  );
+};

@@ -1,13 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsWhere,
+  FindTreeOptions,
+  Repository,
+  TreeRepository,
+} from 'typeorm';
 import { Permission } from './permission.entity';
 
 @Injectable()
 export class PermissionService {
   constructor(
     @InjectRepository(Permission)
-    private readonly permissionRepository: Repository<Permission>,
+    private readonly permissionRepository: TreeRepository<Permission>,
   ) {}
 
   async create(entityData: Partial<Permission>): Promise<Permission> {
@@ -31,9 +38,13 @@ export class PermissionService {
     return this.permissionRepository.find(options);
   }
 
-  async findOne(id: string): Promise<Permission> {
+  async findTree(entity: Permission, options?: FindTreeOptions) {
+    return this.permissionRepository.findDescendantsTree(entity, options);
+  }
+
+  async findOne(options: FindOptionsWhere<Permission>): Promise<Permission> {
     return this.permissionRepository.findOne({
-      where: { id },
+      where: options,
       withDeleted: true,
     });
   }
@@ -47,6 +58,15 @@ export class PermissionService {
   }
 
   async remove(id: string): Promise<void> {
-    await this.permissionRepository.delete({ id });
+    const entity = new Permission();
+    entity.id = id;
+    const childrenEntities = await this.permissionRepository.findDescendants(
+      entity,
+    );
+    for (const childEntity of childrenEntities) {
+      childEntity.parentId = null;
+    }
+    await this.permissionRepository.save(childrenEntities);
+    await this.permissionRepository.remove(childrenEntities);
   }
 }

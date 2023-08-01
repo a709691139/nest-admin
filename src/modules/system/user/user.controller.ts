@@ -32,6 +32,7 @@ import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { UserAuthService } from './userAuth.service';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
 
+
 @ApiTags('系统用户 sys_user')
 @Controller('sys_user')
 export class UserController {

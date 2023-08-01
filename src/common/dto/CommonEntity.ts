@@ -18,7 +18,7 @@ export class CommonEntity {
   // id: string;
 
   @Exclude()
-  @Column('varchar', { length: 32 })
+  @Column('varchar', { length: 32, default: '001' })
   tenantId: string;
 
   @CreateDateColumn({ transformer: new DateTimeTransformer() })

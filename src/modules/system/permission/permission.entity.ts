@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  TreeChildren,
+  TreeParent,
+  Tree,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { DateColumn, DateTimeColumn } from '@/utils/transform';
 import {
@@ -11,6 +18,7 @@ import {
   菜单权限表
 */
 @Entity({ name: 'sys_permission' })
+@Tree('nested-set')
 export class Permission extends CommonEntity {
   @ApiProperty({ required: false })
   @PrimaryGeneratedColumn('uuid')
@@ -106,4 +114,13 @@ export class Permission extends CommonEntity {
   })
   @Column('varchar', { length: 1, comment: '是否隐藏路由', default: '0' })
   isHidden: string;
+
+  @ApiProperty({
+    required: false,
+    type: [Permission],
+  })
+  @TreeChildren()
+  children: Permission[];
+  @TreeParent()
+  parent: Permission;
 }
