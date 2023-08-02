@@ -5,11 +5,14 @@ import {
   Column,
   Unique,
   BeforeInsert,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { DateColumn, DateTimeColumn } from '@/utils/transform';
 import { CommonSoftDeleteEntity } from '@/common/dto/CommonEntity';
 import * as bcryptjs from 'bcryptjs';
+import { Role } from '../role/role.entity';
 
 /**
  * 系统用户
@@ -124,4 +127,24 @@ export class User extends CommonSoftDeleteEntity {
       this.password = password;
     }
   }
+
+  /** 角色列表 */
+  @ApiProperty({
+    description: '角色列表',
+    required: false,
+    type: [Role],
+  })
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: 'sys_user_sys_role_relate',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'role_id',
+      referencedColumnName: 'id',
+    },
+  })
+  roles: Role[];
 }

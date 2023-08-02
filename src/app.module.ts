@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, Scope } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,7 +15,7 @@ import { RedisLockModule } from 'nestjs-simple-redis-lock';
 import { AuthMiddleware } from './common/middleware/AuthMiddleware';
 import { AuthGuard } from './common/provider/AuthGuard';
 import { ScheduleModule } from '@nestjs/schedule';
-import { TasksService } from './common/schedule/task.service';
+import { TaskService } from './common/schedule/task.service';
 
 @Module({
   imports: [
@@ -63,7 +63,7 @@ import { TasksService } from './common/schedule/task.service';
       useClass: AuthGuard,
     },
     PostSubscriber,
-    TasksService,
+    TaskService,
   ],
 })
 export class AppModule {

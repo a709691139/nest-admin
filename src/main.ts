@@ -12,6 +12,8 @@ import {
 } from '@nestjs/common';
 import { join } from 'path';
 import { GlobalExceptionFilter } from './common/filter/GlobalExceptionFilter';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { TaskService } from './common/schedule/task.service';
 
 const PREFIX = '/api';
 const SWAGGER_PATH = '/swagger';
@@ -78,6 +80,9 @@ async function bootstrap() {
     API 文档：http://localhost:${port}${SWAGGER_PATH}
     静态文件：http://localhost:${port}${STATIC_ASSETS_PATH}
     `);
+
+    const schedulerRegistry = app.get(SchedulerRegistry);
+    schedulerRegistry.getCronJob('queryRoles').fireOnTick();
   });
 }
 bootstrap();

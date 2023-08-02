@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import * as bcryptjs from 'bcryptjs';
+import { TokenData } from '@/common/dto/TokenData';
 
 @Injectable()
 export class UserAuthService {
@@ -23,19 +24,18 @@ export class UserAuthService {
         id,
       },
       withDeleted: false,
+      relations: ['roles'],
     });
-    console.log('configService', this.configService.get('appkey'));
     const seconds = 60 * 60 * 24 * 30;
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        username: user.username,
-      },
-      this.configService.get('appkey'),
-      {
-        expiresIn: seconds,
-      },
-    );
+
+    const tokenData: TokenData = {
+      userId: user.id,
+      username: user.username,
+      roleIds: user.roles.map((role) => role.id),
+    };
+    const token = jwt.sign(tokenData, this.configService.get('appkey'), {
+      expiresIn: seconds,
+    });
     await this.redis.set('userToken:' + user.id, token, 'EX', seconds);
     return {
       userId: user.id,

@@ -8,5 +8,6 @@ import { PermissionModule } from './permission/permission.module';
   imports: [UserModule, RoleModule, PermissionModule],
   controllers: [SystemController],
   providers: [],
+  exports: [],
 })
 export class SystemModule {}
