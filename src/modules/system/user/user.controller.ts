@@ -115,6 +115,7 @@ export class UserController {
 
   @Post('/logout')
   @ApiOperation({ summary: '退出登陆' })
+  @ApiResponseWrap()
   async logout() {
     await this.userAuthService.logout();
     return responseSuccess('');
@@ -137,6 +138,7 @@ export class UserController {
 
   @Post('/update')
   @NeedPermissions('sys_user:update')
+  @ApiResponseWrap()
   async update(@Body() dto: User) {
     return responseSuccess(await this.userService.update(dto.id, dto));
   }
@@ -147,6 +149,14 @@ export class UserController {
     return responseSuccess(await this.userService.remove(id));
   }
 
+  @Get('/getCurrentUserInfo')
+  @ApiOperation({ summary: '获取个人基础资料' })
+  @ApiResponseWrap(User)
+  async getCurrentUserInfo() {
+    const { userId } = this.httpCommonDataProvider.getTokenData();
+    return responseSuccess(await this.userService.findOne(userId));
+  }
+
   @Post('/resetUserPassword')
   @ApiOperation({ summary: '重置用户密码' })
   @NeedPermissions('sys_user:reset_user_password')
@@ -155,7 +165,7 @@ export class UserController {
     return responseSuccess();
   }
 
-  @Post('/updateMyInfo')
+  @Post('/updateCurrentUserInfo')
   @ApiOperation({ summary: '更新个人基础资料' })
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @ApiResponseWrap()
@@ -164,7 +174,7 @@ export class UserController {
     return responseSuccess(await this.userService.update(userId, dto));
   }
 
-  @Post('/updateMyPassoword')
+  @Post('/updateCurrentUserPassoword')
   @ApiOperation({ summary: '修改个人密码' })
   @ApiResponseWrap()
   @UsePipes(new ValidationPipe({ whitelist: true }))

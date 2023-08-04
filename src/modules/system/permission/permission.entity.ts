@@ -115,6 +115,14 @@ export class Permission extends CommonEntity {
   @Column('varchar', { length: 1, comment: '是否隐藏路由', default: '0' })
   isHidden: string;
 
+  /** 跳转地址 */
+  @ApiProperty({
+    description: '跳转地址',
+    required: false,
+  })
+  @Column('varchar', { length: 255, comment: '跳转地址', nullable: true })
+  redirect: string;
+
   @ApiProperty({
     required: false,
     type: [Permission],

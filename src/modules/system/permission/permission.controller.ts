@@ -21,6 +21,7 @@ import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
 import { TaskService } from '@/common/schedule/task.service';
 import { uniqBy } from 'lodash';
+import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 
 @ApiTags('菜单权限表 permission')
 @Controller('permission')
@@ -32,10 +33,12 @@ export class PermissionController {
   ) {}
 
   @Get('/page')
+  @ApiOperation({ summary: '获取系统默认菜单列表' })
   @ApiResponseArrayWrap(Permission)
+  @NotNeedLogin()
   async page(@Query() query: Permission) {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
-    query.id = query.id || '0';
+    query.id = query.id || '1';
     const entity = await this.permissionService.findOne(query);
     const res = await this.permissionService.findTree(entity);
     return responseSuccess([res]);
@@ -73,7 +76,7 @@ export class PermissionController {
     return responseSuccess(await this.permissionService.remove(id));
   }
 
-  @Post('/getMyPermissions')
+  @Post('/getCurrentUserPermissions')
   @ApiOperation({ summary: '获取个人的权限菜单，需前端自己转化树和权限code' })
   @ApiResponseArrayWrap(Permission)
   async getMyPermissions() {
