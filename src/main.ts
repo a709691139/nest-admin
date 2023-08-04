@@ -13,7 +13,6 @@ import {
 import { join } from 'path';
 import { GlobalExceptionFilter } from './common/filter/GlobalExceptionFilter';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { TaskService } from './common/schedule/task.service';
 
 const PREFIX = '/api';
 const SWAGGER_PATH = '/swagger';

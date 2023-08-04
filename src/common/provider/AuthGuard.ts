@@ -11,6 +11,7 @@ import {
   Scope,
   HttpException,
   HttpStatus,
+  forwardRef,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
@@ -33,8 +34,7 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
     );
 
-    console.log('TaskService', this.taskService.roles);
-    if (!this.taskService.roles.length) {
+    if (!this.taskService.getRoles().length) {
       throw new HttpException(
         '服务器初始化权限接口中，请耐心等待',
         HttpStatus.FORBIDDEN,
@@ -92,9 +92,10 @@ export class AuthGuard implements CanActivate {
         throw new HttpException('接口权限不足', HttpStatus.FORBIDDEN);
       }
       for (const roleId of roleIds) {
-        if (this.taskService.rolePermissions[roleId]) {
+        const rolePermissions = this.taskService.getRolePermissions();
+        if (rolePermissions[roleId]) {
           for (const needPermission of needPermissions) {
-            if (this.taskService.rolePermissions[roleId][needPermission]) {
+            if (rolePermissions[roleId][needPermission]) {
               return true;
             }
           }

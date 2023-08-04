@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty } from 'class-validator';
+import { User } from './user.entity';
 
 export class RegisUserDto {
   @ApiProperty({
@@ -43,7 +44,9 @@ export class LoginSuccessResponseDto {
   @ApiProperty()
   userId: string;
   @ApiProperty()
-  userInfo: string;
+  userInfo: User;
+  @ApiProperty({ title: '个人权限code列表' })
+  permissions: string[];
 }
 
 export class ResetUserPasswordDto {

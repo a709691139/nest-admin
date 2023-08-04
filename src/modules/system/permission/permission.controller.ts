@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { Permission } from './permission.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -11,6 +19,8 @@ import {
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
+import { TaskService } from '@/common/schedule/task.service';
+import { uniqBy } from 'lodash';
 
 @ApiTags('菜单权限表 permission')
 @Controller('permission')
@@ -18,6 +28,7 @@ export class PermissionController {
   constructor(
     private readonly permissionService: PermissionService,
     private readonly httpCommonDataProvider: HttpCommonDataProvider,
+    private readonly taskService: TaskService,
   ) {}
 
   @Get('/page')
@@ -60,5 +71,21 @@ export class PermissionController {
   @Post('/remove/:id')
   async remove(@Param('id') id: string) {
     return responseSuccess(await this.permissionService.remove(id));
+  }
+
+  @Post('/getMyPermissions')
+  @ApiOperation({ summary: '获取个人的权限菜单，需前端自己转化树和权限code' })
+  @ApiResponseArrayWrap(Permission)
+  async getMyPermissions() {
+    const { roleIds } = this.httpCommonDataProvider.getTokenData();
+    const roles = this.taskService
+      .getRoles()
+      .filter((v) => roleIds.includes(v.id));
+    let permissions: Permission[] = [];
+    roles.forEach((v) => {
+      permissions.push(...v.permissions);
+    });
+    permissions = uniqBy(permissions, 'id');
+    return responseSuccess(permissions);
   }
 }

@@ -54,6 +54,7 @@ import { TaskService } from './common/schedule/task.service';
   providers: [
     AppService,
     HttpCommonDataProvider,
+    TaskService,
     {
       provide: APP_INTERCEPTOR,
       useClass: RequestInterceptor,
@@ -63,8 +64,8 @@ import { TaskService } from './common/schedule/task.service';
       useClass: AuthGuard,
     },
     PostSubscriber,
-    TaskService,
   ],
+  exports: [TaskService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

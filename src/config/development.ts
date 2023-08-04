@@ -14,7 +14,7 @@ const data = {
     charset: 'utf8mb4',
     entities: ['**/*.entity.js'],
     synchronize: true,
-    logging: true,
+    logging: false,
   },
   redis: {
     host: 'localhost',

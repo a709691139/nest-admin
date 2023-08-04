@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { RoleController } from './role.controller';
 import { RoleService } from './role.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,7 +7,10 @@ import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider
 import { PermissionModule } from '../permission/permission.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Role]), PermissionModule],
+  imports: [
+    TypeOrmModule.forFeature([Role]),
+    forwardRef(() => PermissionModule),
+  ],
   controllers: [RoleController],
   providers: [RoleService, HttpCommonDataProvider],
 })

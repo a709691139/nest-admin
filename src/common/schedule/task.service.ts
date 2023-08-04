@@ -1,23 +1,27 @@
 import { Role } from '@/modules/system/role/role.entity';
-import { Injectable, Logger } from '@nestjs/common';
+import { Global, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 
+@Global()
 @Injectable()
 export class TaskService {
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     @InjectConnection() private connection: Connection,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+    Logger.debug('TaskService constructor');
+  }
 
   private readonly logger = new Logger(TaskService.name);
 
-  roles: Role[] = [];
+  private roles: Role[] = [];
   /** 角色权限map：只含按钮权限 */
-  rolePermissions: { [roleId: string]: { [perms: string]: boolean } } = {};
+  private rolePermissions: { [roleId: string]: { [perms: string]: boolean } } =
+    {};
 
   @Cron('0 */5 * * * *', { name: 'queryRoles' })
   async queryRoles() {
@@ -37,5 +41,13 @@ export class TaskService {
         }
       });
     });
+  }
+
+  getRoles() {
+    return this.roles;
+  }
+
+  getRolePermissions() {
+    return this.rolePermissions;
   }
 }

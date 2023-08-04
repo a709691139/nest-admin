@@ -10,8 +10,8 @@ import * as jwt from 'jsonwebtoken';
 @Injectable({ scope: Scope.REQUEST })
 export class HttpCommonDataProvider {
   public counter = 0;
-  public tenantId = '';
-  public tokenData = {} as TokenData;
+  private tenantId = '';
+  private tokenData = {} as TokenData;
   constructor(
     @Inject(REQUEST) private request,
     private readonly configService: ConfigService,
@@ -19,6 +19,7 @@ export class HttpCommonDataProvider {
     this.tenantId =
       this.request.headers.tenantid || this.request.headers.tenantId || '001';
     this.initTokenData();
+    Logger.debug('HttpCommonDataProvider contructor');
   }
 
   setTenantId(tenantId: string) {
@@ -52,7 +53,7 @@ export class HttpCommonDataProvider {
           this.setTokenData({
             userId: 'admin',
             username: 'admin',
-            roleIds: ['admin'],
+            roleIds: ['1', 'admin'],
           });
           return;
         }
