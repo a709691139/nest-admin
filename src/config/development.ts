@@ -1,6 +1,8 @@
 const data = {
   appkey: '_1555233249358_7017',
   port: parseInt(process.env.PORT, 10) || 3000,
+  // 静态文件路径
+  staticAccestsPath: '/static',
   // 是否开启swagger
   enableSwagger: true,
   // 数据库配置
@@ -22,6 +24,9 @@ const data = {
     database: 0,
     password: '',
     ttl: 60,
+  },
+  upload: {
+    localPath: './public/upload',
   },
 };
 export default data;

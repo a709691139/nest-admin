@@ -16,6 +16,7 @@ import { AuthMiddleware } from './common/middleware/AuthMiddleware';
 import { AuthGuard } from './common/provider/AuthGuard';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './common/schedule/task.service';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -46,6 +47,13 @@ import { TaskService } from './common/schedule/task.service';
       },
     }),
     RedisLockModule.register({}),
+    MulterModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        dest: configService.get('upload')?.localPath || '/upload',
+      }),
+      inject: [ConfigService],
+    }),
     SystemModule,
     ScheduleModule.forRoot(),
     DemoOneModule,

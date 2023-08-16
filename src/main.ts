@@ -16,14 +16,17 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 
 const PREFIX = '/api';
 const SWAGGER_PATH = '/swagger';
-const STATIC_ASSETS_PATH = '/static';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const configService = app.get(ConfigService);
   app.setGlobalPrefix(PREFIX);
   app.enableCors();
+  const staticAccestsPath =
+    configService.get<string>('staticAccestsPath') || '/static';
+
   app.useStaticAssets(join(__dirname, '..', 'public'), {
-    prefix: STATIC_ASSETS_PATH,
+    prefix: staticAccestsPath,
   });
   app.useGlobalPipes(
     new ValidationPipe({
@@ -41,8 +44,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new GlobalExceptionFilter());
 
-  const configSerive = app.get(ConfigService);
-  const enableSwagger = configSerive.get<boolean>('enableSwagger');
+  const enableSwagger = configService.get<boolean>('enableSwagger');
   if (enableSwagger) {
     const options = new DocumentBuilder()
       .setTitle('nest接口')
@@ -77,7 +79,7 @@ async function bootstrap() {
     env: ${process.env.NODE_ENV}
     启动成功：http://localhost:${port}${PREFIX}
     API 文档：http://localhost:${port}${SWAGGER_PATH}
-    静态文件：http://localhost:${port}${STATIC_ASSETS_PATH}
+    静态文件：http://localhost:${port}${staticAccestsPath}
     `);
 
     const schedulerRegistry = app.get(SchedulerRegistry);
