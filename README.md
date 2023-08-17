@@ -129,7 +129,7 @@ console.log(result); // 输出: Adult
 ```
 
 - 建议通用权限设计：table:action
-  分页 page 、详情 get 、新增 create、 删除 remove 、编辑 update
+  分页 page 、详情 get 、新增 create、 删除 remove 、编辑 update、导出 excel: export_excel
 
 ###
 
