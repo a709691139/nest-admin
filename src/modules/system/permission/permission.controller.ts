@@ -22,6 +22,7 @@ import { responseSuccess } from '@/utils/result';
 import { TaskService } from '@/common/schedule/task.service';
 import { uniqBy } from 'lodash';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
+import { NeedPermissions } from '@/common/decorator/NeedPermissions';
 
 @ApiTags('菜单权限表 permission')
 @Controller('permission')
@@ -45,6 +46,7 @@ export class PermissionController {
   }
 
   @Post('/create')
+  @NeedPermissions('sys_permission:create')
   @ApiResponseWrap(Permission)
   async create(@Body() dto: Permission) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
@@ -57,12 +59,14 @@ export class PermissionController {
 
   @Get('get')
   @ApiResponseWrap(Permission)
+  @NeedPermissions('sys_permission:get')
   async findOne(@Query('id') id: string) {
     return responseSuccess(await this.permissionService.findOne({ id }));
   }
 
   @Post('/update')
   @ApiResponseWrap(Permission)
+  @NeedPermissions('sys_permission:update')
   async update(@Body() dto: Permission) {
     if (dto.parentId) {
       dto.parent = new Permission();
@@ -72,6 +76,7 @@ export class PermissionController {
   }
 
   @Post('/remove/:id')
+  @NeedPermissions('sys_permission:remove')
   async remove(@Param('id') id: string) {
     return responseSuccess(await this.permissionService.remove(id));
   }

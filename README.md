@@ -125,8 +125,11 @@ console.log(result); // 输出: Adult
 
 ```ts
 // 添加，传多个就需要有其中一个权限
-@NeedPermissions('user:add') //
+@NeedPermissions('user:add')
 ```
+
+- 建议通用权限设计：table:action
+  分页 page 、详情 get 、新增 create、 删除 remove 、编辑 update
 
 ###
 

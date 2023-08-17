@@ -131,8 +131,8 @@ export class UserController {
 
   @Get('get')
   @ApiResponseWrap(User)
+  @NeedPermissions('sys_user:get')
   async findOne(@Query('id') id: string) {
-    Logger.debug('TokenData', this.httpCommonDataProvider.getTokenData());
     return responseSuccess(await this.userService.findOne(id));
   }
 
