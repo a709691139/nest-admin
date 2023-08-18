@@ -13,6 +13,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import { responseSuccess } from '@/utils/result';
+import { ApiResponseWrap } from '@/common/decorator/swagger';
+import { UploadResponse } from './upload.dto';
 
 @ApiTags('上传文件')
 @Controller('upload')
@@ -21,6 +23,7 @@ export class UploadController {
 
   @Post('/file')
   @UseInterceptors(FileInterceptor('file'))
+  @ApiResponseWrap(UploadResponse)
   uploadFile(
     @UploadedFile(
       new ParseFilePipeBuilder()
@@ -48,6 +51,8 @@ export class UploadController {
 
     const staticAccestsPath =
       this.configService.get<string>('staticAccestsPath') || '/static';
-    return responseSuccess(join(staticAccestsPath, filePath));
+    return responseSuccess({
+      value: join(staticAccestsPath, filePath),
+    });
   }
 }
