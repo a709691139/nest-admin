@@ -2,6 +2,8 @@
 
 nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单管理、自定义表单设计器
 
+- 配套前端：react+amis： https://github.com/a709691139/react-antd-pro-admin
+
 ## 文档
 
 - nestjs: https://nestjs.bootcss.com/first-steps.html
@@ -62,6 +64,10 @@ this.lockService.unlock('test1');
 ```ts
 import { IsNotEmpty, IsArray, ArrayNotEmpty } from 'class-validator';
 
+class Item{
+  @IsNotEmpty({ message: 'name 不允许为空' })
+  name:string
+}
 /** 新增接口dto */
 export class AddUserDto {
   @ApiProperty({
@@ -76,7 +82,8 @@ export class AddUserDto {
 
   @IsArray()
   @ArrayNotEmpty()
-  myArray: any[];
+  @ValidateNested({ each: true })
+  myArray: Item[];
 }
 
 // 可以自动去除多余的字段，只要RegisUserDto定义的

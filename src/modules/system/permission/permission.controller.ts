@@ -6,6 +6,8 @@ import {
   Param,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { Permission } from './permission.entity';
@@ -23,6 +25,7 @@ import { TaskService } from '@/common/schedule/task.service';
 import { uniqBy } from 'lodash';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
+import { CreateButtonsReq } from './permission.dto';
 
 @ApiTags('菜单权限表 permission')
 @Controller('permission')
@@ -95,5 +98,25 @@ export class PermissionController {
     });
     permissions = uniqBy(permissions, 'id');
     return responseSuccess(permissions);
+  }
+
+  @Post('/createButtons')
+  @ApiOperation({ summary: '创建多个按钮权限' })
+  @NeedPermissions('sys_permission:create')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @ApiResponseWrap()
+  async createCommonButtons(@Body() req: CreateButtonsReq) {
+    const { parentId, buttons } = req;
+    const permissions = buttons.map((v) => {
+      const item = new Permission();
+      item.name = v.name;
+      item.perms = v.perms;
+      item.tenantId = this.httpCommonDataProvider.getTenantId();
+      item.parentId = parentId;
+      item.parent = new Permission();
+      item.parent.id = parentId;
+      return item;
+    });
+    return responseSuccess(await this.permissionService.creates(permissions));
   }
 }
