@@ -8,6 +8,7 @@ import {
   LessThanOrEqual,
   MoreThan,
   LessThan,
+  FindManyOptions,
 } from 'typeorm';
 
 /**
@@ -17,14 +18,17 @@ import {
  * 3、in查询	若传入的数据带,(逗号) 则表示该查询为in查询
  * 4、时间范围查询，需包含两个字段：{*}_begin，{*}_end
  * 5、大小查询："lt 100" 中间空格 , 小于查询 lt 100, 小于等于 le 100, 大于 gt 100, 大于等于 ge 100
+ * 6、排序 orderBy: platform, orderDir: desc
  */
 export function createQueryWrapper<T>(param: T) {
-  const data: FindOptionsWhere<T> = {};
+  const options: FindManyOptions<T> = {
+    where: {},
+  };
   if (!param) {
-    return data;
+    return options;
   }
   const keys = Object.keys(param);
-  const ignoreKeys = ['page', 'pageSize', 'sort', 'order'];
+  const ignoreKeys = ['page', 'pageSize', 'orderBy', 'orderDir'];
   keys.forEach((key) => {
     if (ignoreKeys.includes(key)) {
       return;
@@ -60,9 +64,14 @@ export function createQueryWrapper<T>(param: T) {
         data[key] = value;
       }
     } else {
-      data[key] = value;
+      options.where[key] = value;
     }
   });
+  if (keys.includes('orderBy')) {
+    options.order = {
+      [param['orderBy']]: param['orderDir'] || 'ASC',
+    };
+  }
   Logger.debug('createQueryWrapper', createQueryWrapper);
-  return data;
+  return options;
 }
