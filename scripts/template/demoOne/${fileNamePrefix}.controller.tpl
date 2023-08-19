@@ -37,7 +37,7 @@ export class <%= entityName %>Controller {
       page,
       pageSize,
       {
-        where: createQueryWrapper(query),
+        ...createQueryWrapper(query),
         <%= isSoftDelete? "withDeleted: withDeleted === '1'," : "" %>
       },
     );

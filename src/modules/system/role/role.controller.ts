@@ -48,7 +48,7 @@ export class RoleController {
     page = Number(page);
     pageSize = Number(pageSize);
     const [data, total] = await this.roleService.findAndCount(page, pageSize, {
-      where: createQueryWrapper(query),
+      ...createQueryWrapper(query),
       relations: ['permissions'],
     });
     const pagination: Pagination<Role> = {

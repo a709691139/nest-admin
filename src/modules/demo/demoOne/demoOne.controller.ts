@@ -49,9 +49,7 @@ export class DemoOneController {
     const [data, total] = await this.demoOneService.findAndCount(
       page,
       pageSize,
-      {
-        where: createQueryWrapper(query),
-      },
+      createQueryWrapper(query),
     );
     const pagination: Pagination<DemoOne> = {
       data: data || [],

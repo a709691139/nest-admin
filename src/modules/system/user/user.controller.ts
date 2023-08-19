@@ -56,9 +56,11 @@ export class UserController {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);
     pageSize = Number(pageSize);
-    const [data, total] = await this.userService.findAndCount(page, pageSize, {
-      where: createQueryWrapper(query),
-    });
+    const [data, total] = await this.userService.findAndCount(
+      page,
+      pageSize,
+      createQueryWrapper(query),
+    );
     const pagination: Pagination<User> = {
       data: data || [],
       page,
