@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AppModule } from '@/app.module';
+import { UploadController } from './upload.controller';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { AppModule } from '@/app.module';
     PermissionModule,
     forwardRef(() => AppModule),
   ],
-  controllers: [SystemController],
+  controllers: [SystemController, UploadController],
   providers: [],
   exports: [],
 })

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, In, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { UserAuthService } from './userAuth.service';
+import { RoleService } from '../role/role.service';
+import { UpdateRolesDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -10,6 +12,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly userAuthService: UserAuthService,
+    private readonly roleService: RoleService,
   ) {}
 
   async create(entityData: Partial<User>): Promise<User> {
@@ -36,7 +39,11 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<User> {
-    return this.userRepository.findOne({ where: { id }, withDeleted: true });
+    return this.userRepository.findOne({
+      where: { id },
+      withDeleted: true,
+      relations: ['roles'],
+    });
   }
 
   async findOneByOptions(options: FindOneOptions<User>): Promise<User> {
@@ -54,5 +61,17 @@ export class UserService {
 
   async remove(id: string): Promise<void> {
     await this.userRepository.softRemove({ id });
+  }
+
+  async updateUserRole(dto: UpdateRolesDto) {
+    const { roleIds, userId } = dto;
+    const roles = await this.roleService.findByIds(roleIds);
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (user) {
+      user.roles = roles;
+      await this.userRepository.save(user);
+    }
   }
 }

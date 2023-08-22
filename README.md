@@ -82,7 +82,8 @@ export class AddUserDto {
 
   @IsArray()
   @ArrayNotEmpty()
-  @ValidateNested({ each: true })
+  @ValidateNested()
+  @Type(() => Item)
   myArray: Item[];
 }
 

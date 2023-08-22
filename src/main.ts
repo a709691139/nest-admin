@@ -73,7 +73,7 @@ async function bootstrap() {
     SwaggerModule.setup(SWAGGER_PATH, app, document);
   }
 
-  const port = configSerive.get<number>('port');
+  const port = configService.get<number>('port');
   await app.listen(port, () => {
     Logger.debug(`
     env: ${process.env.NODE_ENV}

@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  ValidateNested,
+  ArrayNotEmpty,
+} from 'class-validator';
 
 class Button {
   @IsNotEmpty()
@@ -18,8 +25,8 @@ export class CreateButtonsReq {
   @ApiProperty({
     required: true,
   })
-  @IsNotEmpty()
-  @IsArray()
-  @ValidateNested({ each: true })
+  @ArrayNotEmpty()
+  @ValidateNested()
+  @Type(() => Button)
   buttons: Button[];
 }

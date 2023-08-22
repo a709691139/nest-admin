@@ -26,9 +26,10 @@ import { uniqBy } from 'lodash';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
 import { CreateButtonsReq } from './permission.dto';
+import { Not } from 'typeorm';
 
-@ApiTags('菜单权限表 permission')
-@Controller('permission')
+@ApiTags('菜单权限表 sys_permission')
+@Controller('sys_permission')
 export class PermissionController {
   constructor(
     private readonly permissionService: PermissionService,
@@ -39,6 +40,7 @@ export class PermissionController {
   @Get('/page')
   @ApiOperation({ summary: '获取系统默认菜单列表' })
   @ApiResponseArrayWrap(Permission)
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   @NotNeedLogin()
   async page(@Query() query: Permission) {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
@@ -105,18 +107,21 @@ export class PermissionController {
   @NeedPermissions('sys_permission:create')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @ApiResponseWrap()
-  async createCommonButtons(@Body() req: CreateButtonsReq) {
+  async createButtons(@Body() req: CreateButtonsReq) {
     const { parentId, buttons } = req;
+    const parent = new Permission();
+    parent.id = parentId;
     const permissions = buttons.map((v) => {
       const item = new Permission();
       item.name = v.name;
       item.perms = v.perms;
+      item.menuType = '2';
       item.tenantId = this.httpCommonDataProvider.getTenantId();
       item.parentId = parentId;
-      item.parent = new Permission();
-      item.parent.id = parentId;
+      item.parent = parent;
       return item;
     });
+    console.log(buttons);
     return responseSuccess(await this.permissionService.creates(permissions));
   }
 }

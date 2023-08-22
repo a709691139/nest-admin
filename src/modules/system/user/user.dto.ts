@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, ValidateNested, IsArray } from 'class-validator';
 import { User } from './user.entity';
+import { Type } from 'class-transformer';
 
 export class RegisUserDto {
   @ApiProperty({
@@ -79,7 +80,7 @@ export class UpdateMyInfoDto {
   signature: string;
 }
 
-export class UpdateMyPassoword {
+export class UpdateMyPassowordDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -89,4 +90,39 @@ export class UpdateMyPassoword {
   @IsString()
   @IsNotEmpty()
   newPassword: string;
+}
+
+export class ResetPasswordReqDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
+
+export class UpdateStatusReqDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+
+  @ApiProperty({ title: '1:启用、0:冻结' })
+  @IsString()
+  @IsNotEmpty()
+  status: string;
+}
+
+export class UpdateRolesDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+
+  @ApiProperty()
+  @IsArray()
+  roleIds: string[];
 }

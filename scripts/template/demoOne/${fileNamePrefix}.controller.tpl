@@ -27,15 +27,15 @@ export class <%= entityName %>Controller {
   })
   async page(
     @Query('page') page: number,
-    @Query('pageSize') pageSize: number, <%= isSoftDelete? "@Query('withDeleted') withDeleted: string," : '' %>
+    @Query('perPage') perPage: number, <%= isSoftDelete? "@Query('withDeleted') withDeleted: string," : '' %>
     @Query() query: <%= entityName %>,
   ) {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);
-    pageSize = Number(pageSize);
+    perPage = Number(perPage);
     const [data, total] = await this.<%= fileNamePrefix  %>Service.findAndCount(
       page,
-      pageSize,
+      perPage,
       {
         ...createQueryWrapper(query),
         <%= isSoftDelete? "withDeleted: withDeleted === '1'," : "" %>
@@ -44,7 +44,7 @@ export class <%= entityName %>Controller {
     const pagination: Pagination<<%= entityName %>> = {
       data: data || [],
       page,
-      pageSize,
+      perPage,
       total,
     };
     return responseSuccess(pagination);

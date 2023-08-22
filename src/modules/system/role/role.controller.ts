@@ -20,11 +20,11 @@ import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
 import { PermissionService } from '../permission/permission.service';
 import { In } from 'typeorm';
-import { UpdateRolePermissionDto } from './role.dto';
+import { AddRoleDto, UpdateRoleDto, UpdateRolePermissionDto } from './role.dto';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
 
 @ApiTags('角色表 role')
-@Controller('role')
+@Controller('sys_role')
 export class RoleController {
   constructor(
     private readonly roleService: RoleService,
@@ -33,7 +33,7 @@ export class RoleController {
   ) {}
 
   @Get('/page')
-  @NeedPermissions('sys_role:page')
+  @NeedPermissions(['sys_role:page', 'sys_user:updateRoles'])
   @ApiPaginatedResponse(Role)
   @ApiOperation({
     summary: '分页查询',
@@ -41,20 +41,19 @@ export class RoleController {
   })
   async page(
     @Query('page') page: number,
-    @Query('pageSize') pageSize: number,
+    @Query('perPage') perPage: number,
     @Query() query: Role,
   ) {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);
-    pageSize = Number(pageSize);
-    const [data, total] = await this.roleService.findAndCount(page, pageSize, {
+    perPage = Number(perPage);
+    const [data, total] = await this.roleService.findAndCount(page, perPage, {
       ...createQueryWrapper(query),
-      relations: ['permissions'],
     });
     const pagination: Pagination<Role> = {
       data: data || [],
       page,
-      pageSize,
+      perPage,
       total,
     };
     return responseSuccess(pagination);
@@ -63,16 +62,8 @@ export class RoleController {
   @Post('/create')
   @NeedPermissions('sys_role:create')
   @ApiResponseWrap(Role)
-  async create(@Body() dto: Role) {
+  async create(@Body() dto: AddRoleDto) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
-    if (dto.permissions.length) {
-      console.log('query', dto.permissions);
-      const permissions = await this.permissionService.findAll({
-        where: { id: In(dto.permissions.map((v) => v.id)) },
-      });
-      console.log('permissions', permissions);
-      dto.permissions = permissions;
-    }
     return responseSuccess(await this.roleService.create(dto));
   }
 
@@ -85,12 +76,12 @@ export class RoleController {
   @Post('/update')
   @NeedPermissions('sys_role:update')
   @ApiResponseWrap(Role)
-  async update(@Body() dto: Role) {
+  async update(@Body() dto: UpdateRoleDto) {
     return responseSuccess(await this.roleService.update(dto.id, dto));
   }
 
   @Post('/updateNeedPermissions')
-  @NeedPermissions('sys_role:update:permissions')
+  @NeedPermissions('sys_role:update_permissions')
   @ApiResponseWrap(Role)
   async updateNeedPermissions(@Body() dto: UpdateRolePermissionDto) {
     const role = {

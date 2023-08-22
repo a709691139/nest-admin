@@ -24,7 +24,7 @@ export class Pagination<T> {
   page: number;
 
   @ApiProperty()
-  pageSize: number;
+  perPage: number;
 
   @ApiProperty()
   total: number;

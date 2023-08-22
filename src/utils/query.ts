@@ -28,7 +28,7 @@ export function createQueryWrapper<T>(param: T) {
     return options;
   }
   const keys = Object.keys(param);
-  const ignoreKeys = ['page', 'pageSize', 'orderBy', 'orderDir'];
+  const ignoreKeys = ['page', 'perPage', 'orderBy', 'orderDir'];
   keys.forEach((key) => {
     if (ignoreKeys.includes(key)) {
       return;
@@ -39,16 +39,16 @@ export function createQueryWrapper<T>(param: T) {
         let likeStr = value;
         if (likeStr[0] === '*') likeStr = likeStr.replace(/^./, '%');
         if (likeStr.slice(-1) === '*') likeStr = likeStr.slice(0, -1) + '%';
-        data[key] = Like(likeStr);
+        options.where[key] = Like(likeStr);
       } else if (value[0] === '!') {
-        data[key] = Not(value.replace(/^./, ''));
+        options.where[key] = Not(value.replace(/^./, ''));
       } else if (value.includes(',')) {
-        data[key] = In(value.split(','));
+        options.where[key] = In(value.split(','));
       } else if (/_begin$/.test(key)) {
         const endTimeKey = key.slice(0, key.length - 6) + '_end';
         if (keys.find((v) => v === endTimeKey)) {
-          data[key] = MoreThanOrEqual(value);
-          data[endTimeKey] = LessThanOrEqual(param[endTimeKey]);
+          options.where[key] = MoreThanOrEqual(value);
+          options.where[endTimeKey] = LessThanOrEqual(param[endTimeKey]);
         }
       } else if (/_end$/.test(key)) {
       } else if (/^(le|ge|gt|lt)\s.+/.test(value)) {
@@ -59,9 +59,9 @@ export function createQueryWrapper<T>(param: T) {
           gt: MoreThan,
           lt: LessThan,
         };
-        data[key] = fns[fnKey](value.substring(3));
+        options.where[key] = fns[fnKey](value.substring(3));
       } else {
-        data[key] = value;
+        options.where[key] = value;
       }
     } else {
       options.where[key] = value;

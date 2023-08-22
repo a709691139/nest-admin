@@ -40,21 +40,21 @@ export class DemoOneController {
   })
   async page(
     @Query('page') page: number,
-    @Query('pageSize') pageSize: number,
+    @Query('perPage') perPage: number,
     @Query() query: DemoOne,
   ) {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);
-    pageSize = Number(pageSize);
+    perPage = Number(perPage);
     const [data, total] = await this.demoOneService.findAndCount(
       page,
-      pageSize,
+      perPage,
       createQueryWrapper(query),
     );
     const pagination: Pagination<DemoOne> = {
       data: data || [],
       page,
-      pageSize,
+      perPage,
       total,
     };
     return responseSuccess(pagination);

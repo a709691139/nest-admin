@@ -44,8 +44,8 @@ export class UserAuthService {
     };
   }
 
-  async logout() {
-    await this.redis.del('userToken:*');
+  async logout(userId: string) {
+    await this.redis.del('userToken:' + userId);
   }
 
   /** 密码加密 */

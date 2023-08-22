@@ -27,6 +27,7 @@ const data = {
   },
   upload: {
     localPath: './public/upload',
+    localDomain: 'http://localhost:3000',
   },
 };
 export default data;

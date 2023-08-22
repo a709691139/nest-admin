@@ -25,7 +25,10 @@ import {
   LoginSuccessResponseDto,
   ResetUserPasswordDto,
   UpdateMyInfoDto,
-  UpdateMyPassoword,
+  UpdateMyPassowordDto,
+  UpdateStatusReqDto,
+  UpdateRolesDto,
+  ResetPasswordReqDto,
 } from './user.dto';
 import { responseError, responseSuccess } from '@/utils/result';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
@@ -50,21 +53,20 @@ export class UserController {
   })
   async page(
     @Query('page') page: number,
-    @Query('pageSize') pageSize: number,
+    @Query('perPage') perPage: number,
     @Query() query: User,
   ) {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);
-    pageSize = Number(pageSize);
-    const [data, total] = await this.userService.findAndCount(
-      page,
-      pageSize,
-      createQueryWrapper(query),
-    );
+    perPage = Number(perPage);
+    const [data, total] = await this.userService.findAndCount(page, perPage, {
+      ...createQueryWrapper(query),
+      relations: ['roles'],
+    });
     const pagination: Pagination<User> = {
       data: data || [],
       page,
-      pageSize,
+      perPage,
       total,
     };
     return responseSuccess(pagination);
@@ -119,7 +121,8 @@ export class UserController {
   @ApiOperation({ summary: '退出登陆' })
   @ApiResponseWrap()
   async logout() {
-    await this.userAuthService.logout();
+    const { userId } = this.httpCommonDataProvider.getTokenData();
+    await this.userAuthService.logout(userId);
     return responseSuccess('');
   }
 
@@ -180,7 +183,7 @@ export class UserController {
   @ApiOperation({ summary: '修改个人密码' })
   @ApiResponseWrap()
   @UsePipes(new ValidationPipe({ whitelist: true }))
-  async updateMyPassoword(@Body() dto: UpdateMyPassoword) {
+  async updateMyPassoword(@Body() dto: UpdateMyPassowordDto) {
     const userId = this.httpCommonDataProvider.getTokenData().userId;
     const isValid = await this.userAuthService.checkIsValidPassword(
       userId,
@@ -190,6 +193,36 @@ export class UserController {
       return responseError('当前密码不正确');
     }
     await this.userAuthService.resetUserPassword(userId, dto.newPassword);
+    return responseSuccess();
+  }
+
+  @Post('/updateStatus')
+  @ApiOperation({ summary: '启用或冻结用户' })
+  @ApiResponseWrap()
+  @NeedPermissions('sys_user:updateStatus')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async updateStatus(@Body() dto: UpdateStatusReqDto) {
+    await this.userService.update(dto.userId, { status: dto.status });
+    return responseSuccess();
+  }
+
+  @Post('/updateRoles')
+  @ApiOperation({ summary: '分配角色' })
+  @ApiResponseWrap()
+  @NeedPermissions('sys_user:updateRoles')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async updateRoles(@Body() dto: UpdateRolesDto) {
+    await this.userService.updateUserRole(dto);
+    return responseSuccess();
+  }
+
+  @Post('/resetPassword')
+  @ApiOperation({ summary: '重置密码' })
+  @ApiResponseWrap()
+  @NeedPermissions('sys_user:resetPassword')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async resetPassword(@Body() dto: ResetPasswordReqDto) {
+    await this.userAuthService.resetUserPassword(dto.userId, dto.password);
     return responseSuccess();
   }
 }
