@@ -29,6 +29,7 @@ import {
   UpdateStatusReqDto,
   UpdateRolesDto,
   ResetPasswordReqDto,
+  PageUserReqDto,
 } from './user.dto';
 import { responseError, responseSuccess } from '@/utils/result';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
@@ -51,10 +52,11 @@ export class UserController {
     summary: '分页查询',
     description: '分页查询',
   })
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   async page(
     @Query('page') page: number,
     @Query('perPage') perPage: number,
-    @Query() query: User,
+    @Query() query: PageUserReqDto,
   ) {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);

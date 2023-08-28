@@ -4,7 +4,7 @@ import { FindManyOptions, FindOneOptions, In, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { UserAuthService } from './userAuth.service';
 import { RoleService } from '../role/role.service';
-import { UpdateRolesDto } from './user.dto';
+import { PageUserReqDto, UpdateRolesDto } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -26,11 +26,7 @@ export class UserService {
     return this.userRepository.save(entity);
   }
 
-  async findAndCount(
-    page: number,
-    limit: number,
-    options?: FindManyOptions<User>,
-  ) {
+  async findAndCount(page: number, limit: number, options?: any) {
     return await this.userRepository.findAndCount({
       take: limit,
       skip: (page - 1) * limit,

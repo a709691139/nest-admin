@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import {
   EventSubscriber,
   EntitySubscriberInterface,
@@ -8,18 +8,15 @@ import {
   TransactionStartEvent,
 } from 'typeorm';
 
-// @Injectable({ scope: Scope.REQUEST })
 @EventSubscriber()
 export class PostSubscriber implements EntitySubscriberInterface {
   constructor(private readonly dataSource: DataSource) {
     dataSource.subscribers.push(this);
   }
-  // @Inject()
-  // private readonly httpCommonDataProvider: HttpCommonDataProvider;
 
   beforeInsert(event: InsertEvent<any>) {
     const { entity } = event;
-    Logger.debug(`BEFORE INSERT: `, entity);
+    // Logger.debug(`BEFORE INSERT: `, entity);
   }
 
   afterLoad(entity: any, _event?: LoadEvent<any>) {

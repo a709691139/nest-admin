@@ -14,8 +14,9 @@ export class RoleService {
 
   async create(entityData: Partial<Role>): Promise<Role> {
     const entity = this.roleRepository.create(entityData);
+    const res = await this.roleRepository.save(entity);
     this.schedulerRegistry.getCronJob('queryRoles').fireOnTick();
-    return this.roleRepository.save(entity);
+    return res;
   }
 
   async findAndCount(

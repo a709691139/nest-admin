@@ -3,6 +3,45 @@ import { IsString, IsNotEmpty, ValidateNested, IsArray } from 'class-validator';
 import { User } from './user.entity';
 import { Type } from 'class-transformer';
 
+export class PageUserReqDto {
+  tenantId: string;
+  @ApiProperty({ required: false })
+  id: string;
+
+  @ApiProperty({ required: false, description: '账号名' })
+  username: string;
+
+  @ApiProperty({ required: false, description: '邮箱地址' })
+  email: string;
+
+  @ApiProperty({ required: false, description: '手机' })
+  phone: string;
+
+  @ApiProperty({ required: false, description: '别名' })
+  alias: string;
+
+  @ApiProperty({ required: false, description: '性别 0：未知、1：男、2：女' })
+  gender: string;
+
+  @ApiProperty({ required: false, description: '真实姓名' })
+  realName: string;
+
+  @ApiProperty({ required: false, description: '用户状态: 0禁用 1启用' })
+  status: string;
+
+  @ApiProperty({ required: false, description: '负责部门id列表: 用,隔开' })
+  departIds: string;
+
+  @ApiProperty({ required: false, description: '工号' })
+  workNo: string;
+
+  @ApiProperty({ required: false, description: '角色id' })
+  roleId: string;
+
+  @ApiProperty({ required: false, description: '创建时间' })
+  createdAt: string;
+}
+
 export class RegisUserDto {
   @ApiProperty({
     description: '账号名',
