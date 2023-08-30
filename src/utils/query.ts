@@ -72,6 +72,6 @@ export function createQueryWrapper<T>(param: T) {
       [param['orderBy']]: param['orderDir'] || 'ASC',
     };
   }
-  Logger.debug('createQueryWrapper', createQueryWrapper);
+  // Logger.debug('createQueryWrapper', createQueryWrapper);
   return options;
 }

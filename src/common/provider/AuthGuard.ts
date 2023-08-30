@@ -59,7 +59,7 @@ export class AuthGuard implements CanActivate {
       }
       try {
         tokenData = jwt.verify(token, this.configService.get('appkey')) as any;
-        Logger.debug('', tokenData);
+        // Logger.debug('', tokenData);
       } catch (error) {
         Logger.debug(error.message);
         throw new UnauthorizedException('token失效');

@@ -107,6 +107,7 @@ async regis(@Body() dto: RegisUserDto) {
   entity 加入 CommonSoftDeleteEntity，删除用 repository.softRemove
 - demoOneToOne 一对一表
 - demoOneToMany 一对多表
+  如果修改 parent.children, 只会把已存在数据库的 child 的 parentId 修改，不会自动更新 child 的其他字段， 也不会自动删除和新增 child
 - demoManyToMany 多对多
 
 #### 生成 demo 模板

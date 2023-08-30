@@ -23,7 +23,7 @@ export class HttpCommonDataProvider {
   }
 
   setTenantId(tenantId: string) {
-    Logger.debug('setTenantId', tenantId);
+    // Logger.debug('setTenantId', tenantId);
     this.tenantId = tenantId;
   }
 
@@ -59,7 +59,7 @@ export class HttpCommonDataProvider {
         }
         tokenData = jwt.verify(token, this.configService.get('appkey')) as any;
         this.setTokenData(tokenData);
-        console.log('initTokenData', tokenData);
+        // console.log('initTokenData', tokenData);
       } catch (error) {}
     }
   }
