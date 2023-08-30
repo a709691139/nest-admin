@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { <%= entityName  %>Service } from './<%= fileNamePrefix  %>.service';
-import { <%= entityName %> } from './<%= fileNamePrefix  %>.entity';
+import { <%= entityName %> } from './entity/<%= fileNamePrefix  %>.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Pagination } from '@/common/dto/ResponseWrap';
 import {
   ApiPaginatedResponse,
+  ApiResponseArrayWrap,
   ApiResponseWrap,
 } from '@/common/decorator/swagger';
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
@@ -35,14 +36,11 @@ export class <%= entityName %>Controller {
     query.tenantId = this.httpCommonDataProvider.getTenantId();
     page = Number(page);
     perPage = Number(perPage);
-    const [data, total] = await this.<%= fileNamePrefix  %>Service.findAndCount(
-      page,
-      perPage,
-      {
-        ...createQueryWrapper(query),
-        <%= isSoftDelete? "withDeleted: withDeleted === '1'," : "" %>
-      },
-    );
+    const [data, total] = await this.<%= fileNamePrefix  %>Service.findAndCount(page, perPage, {
+      ...createQueryWrapper(query),
+      relations: ['items'],
+      <%= isSoftDelete? "withDeleted: withDeleted === '1'," : "" %>
+    });
     const pagination: Pagination<<%= entityName %>> = {
       data: data || [],
       page,
@@ -71,7 +69,7 @@ export class <%= entityName %>Controller {
   @NeedPermissions('<%= tableName %>:update')
   @ApiResponseWrap(<%= entityName %>)
   async update(@Body() dto: <%= entityName %>) {
-    return responseSuccess(await this.<%= fileNamePrefix  %>Service.update(dto.id, dto));
+    return responseSuccess(await this.<%= fileNamePrefix  %>Service.update(dto));
   }
 
   @Post('/remove/:id')
@@ -79,4 +77,12 @@ export class <%= entityName %>Controller {
   async remove(@Param('id') id: string) {
     return responseSuccess(await this.<%= fileNamePrefix  %>Service.remove(id));
   }
+
+  @Post('/updateItems')
+  @NeedPermissions('<%= tableName %>:update')
+  @ApiResponseWrap()
+  async updateItems(@Body() dto: <%= entityName %>) {
+    return responseSuccess(await this.<%= fileNamePrefix  %>Service.updateItems(dto));
+  }
+
 }
