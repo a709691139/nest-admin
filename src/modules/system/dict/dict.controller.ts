@@ -13,6 +13,7 @@ import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
+import { ItemDto } from '@/common/dto/ItemDto';
 
 @ApiTags('系统字典表 dict')
 @Controller('sys_dict')
@@ -102,10 +103,9 @@ export class DictController {
     return responseSuccess(await this.dictService.updateItems(dto));
   }
 
-  @Get('getItemsByCode')
-  @ApiResponseWrap(Dict)
-  async getItemsByCode(@Query('code') id: string) {
-    const res = await this.dictService.findOne(id);
-    return responseSuccess(await this.dictService.findOne(id));
+  @Get('/getItemsByCode/:code')
+  @ApiResponseArrayWrap(ItemDto)
+  async getItemsByCode(@Param('code') code: string) {
+    return responseSuccess(await this.dictService.getItemsByCode(code));
   }
 }

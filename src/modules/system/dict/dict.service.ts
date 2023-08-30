@@ -4,6 +4,7 @@ import { FindManyOptions, Repository } from 'typeorm';
 import { Dict } from './entity/dict.entity';
 import { DictItem } from './entity/dictItem.entity';
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
+import { ItemDto } from '@/common/dto/ItemDto';
 
 @Injectable()
 export class DictService {
@@ -67,6 +68,7 @@ export class DictService {
       this.dictItemRepository.delete(parent.items.map((v) => v.id));
     }
     if (entityData.items) {
+      entityData.items.sort((v1, v2) => (v1.sortNo || 1) - (v2.sortNo || 1));
       const items = entityData.items.map((v) => {
         const item = new DictItem();
         item.tenantId = this.httpCommonDataProvider.getTenantId();
@@ -80,5 +82,25 @@ export class DictService {
       this.dictItemRepository.save(items);
     }
     return true;
+  }
+
+  async getItemsByCode(code: string) {
+    const res = await this.dictRepository.findOne({
+      where: { code },
+      withDeleted: true,
+      relations: ['items'],
+    });
+    if (!res) {
+      return [];
+    }
+    const children: ItemDto[] = res.items.map((v) => {
+      return {
+        label: v.label,
+        value: v.value,
+        id: v.value,
+        text: v.label,
+      };
+    });
+    return children;
   }
 }
