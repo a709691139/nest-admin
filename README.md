@@ -21,6 +21,7 @@ nestjs+typeOrm+react+amis 组成的基础管理后台，含权限管理、菜单
 ## 运行
 
 - 安装 mysql ，创建 `nestjs` 数据库
+- 运行 `/sql/init_mysql.sql`
 - 安装 redis
 - 配置好`config/development.ts`
 
