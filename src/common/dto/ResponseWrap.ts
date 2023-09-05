@@ -14,6 +14,9 @@ export class ResponseWrap<T> {
 
   @ApiProperty()
   msg: string;
+
+  @ApiProperty({ type: Boolean })
+  success: boolean;
 }
 
 export class Pagination<T> {

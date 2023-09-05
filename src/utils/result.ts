@@ -6,6 +6,7 @@ export function responseSuccess<T>(
   status = 0,
 ): ResponseWrap<T> {
   return {
+    success: true,
     status,
     msg,
     data: (data || '') as any,
@@ -18,6 +19,7 @@ export function responseError<T>(
   status = 1,
 ): ResponseWrap<T> {
   return {
+    success: false,
     status,
     msg,
     data: (data || '') as any,
