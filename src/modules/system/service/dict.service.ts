@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
-import { Dict } from './entity/dict.entity';
-import { DictItem } from './entity/dictItem.entity';
+import { Dict } from '../entity/dict.entity';
+import { DictItem } from '../entity/dictItem.entity';
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { ItemDto } from '@/common/dto/ItemDto';
 

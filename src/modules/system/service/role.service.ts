@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, In, Repository } from 'typeorm';
-import { Role } from './role.entity';
+import { Role } from '../entity/role.entity';
 import { SchedulerRegistry } from '@nestjs/schedule';
 
 @Injectable()

@@ -9,8 +9,8 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { PermissionService } from './permission.service';
-import { Permission } from './permission.entity';
+import { PermissionService } from '../service/permission.service';
+import { Permission } from '../entity/permission.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Pagination } from '@/common/dto/ResponseWrap';
 import {
@@ -25,8 +25,7 @@ import { TaskService } from '@/common/schedule/task.service';
 import { uniqBy } from 'lodash';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
-import { CreateButtonsReq } from './permission.dto';
-import { Not } from 'typeorm';
+import { CreateButtonsReq } from '../dto/permission.dto';
 
 @ApiTags('菜单权限表 sys_permission')
 @Controller('sys_permission')

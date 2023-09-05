@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { DictService } from './dict.service';
-import { Dict } from './entity/dict.entity';
+import { DictService } from '../service/dict.service';
+import { Dict } from '../entity/dict.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Pagination } from '@/common/dto/ResponseWrap';
 import {

@@ -7,8 +7,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { RoleService } from './role.service';
-import { Role } from './role.entity';
+import { RoleService } from '../service/role.service';
+import { Role } from '../entity/role.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Pagination } from '@/common/dto/ResponseWrap';
 import {
@@ -18,9 +18,13 @@ import {
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
-import { PermissionService } from '../permission/permission.service';
+import { PermissionService } from '../service/permission.service';
 import { In } from 'typeorm';
-import { AddRoleDto, UpdateRoleDto, UpdateRolePermissionDto } from './role.dto';
+import {
+  AddRoleDto,
+  UpdateRoleDto,
+  UpdateRolePermissionDto,
+} from '../dto/role.dto';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
 
 @ApiTags('角色表 role')

@@ -2,9 +2,9 @@ import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { ApiResponseWrap } from '@/common/decorator/swagger';
 import { responseSuccess } from '@/utils/result';
 import { Controller, Get } from '@nestjs/common';
-import { ImageCodeService } from './imageCode.service';
-import { CreateImageCodeResponse } from './dto/createImageCode.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ImageCodeService } from '../service/imageCode.service';
+import { CreateImageCodeResponse } from '../dto/createImageCode.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 
 @ApiTags('system')
@@ -14,7 +14,9 @@ export class SystemController {
     private readonly imageCodeService: ImageCodeService,
     private readonly configService: ConfigService,
   ) {}
-  /** 生成 图片验证码 */
+
+  /** 生成图片验证码 */
+  @ApiOperation({ summary: '生成图片验证码' })
   @Get('/createImageCode')
   @ApiResponseWrap(CreateImageCodeResponse)
   @NotNeedLogin()

@@ -13,7 +13,7 @@ import {
   CommonEntity,
   CommonSoftDeleteEntity,
 } from '@/common/dto/CommonEntity';
-import { Permission } from '../permission/permission.entity';
+import { Permission } from './permission.entity';
 
 /**
   角色表

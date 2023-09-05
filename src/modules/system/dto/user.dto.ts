@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, ValidateNested, IsArray } from 'class-validator';
-import { User } from './user.entity';
+import { User } from '../entity/user.entity';
 import { Type } from 'class-transformer';
 
 export class PageUserReqDto {
@@ -77,10 +77,18 @@ export class LoginPasswordUserDto {
   @IsNotEmpty()
   password: string;
 
+  @ApiProperty({
+    description: '验证码',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   imageCode: string;
 
+  @ApiProperty({
+    description: '验证码id',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   imageCodeId: string;

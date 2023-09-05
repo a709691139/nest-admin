@@ -1,4 +1,4 @@
-import { Role } from '@/modules/system/role/role.entity';
+import { Role } from '@/modules/system/entity/role.entity';
 import { Global, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';

@@ -8,7 +8,7 @@ import {
   Repository,
   TreeRepository,
 } from 'typeorm';
-import { Permission } from './permission.entity';
+import { Permission } from '../entity/permission.entity';
 
 @Injectable()
 export class PermissionService {

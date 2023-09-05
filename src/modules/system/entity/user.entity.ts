@@ -12,7 +12,7 @@ import { Exclude } from 'class-transformer';
 import { DateColumn, DateTimeColumn } from '@/utils/transform';
 import { CommonSoftDeleteEntity } from '@/common/dto/CommonEntity';
 import * as bcryptjs from 'bcryptjs';
-import { Role } from '../role/role.entity';
+import { Role } from './role.entity';
 
 /**
  * 系统用户

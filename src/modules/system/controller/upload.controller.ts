@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import { responseSuccess } from '@/utils/result';
 import { ApiResponseWrap } from '@/common/decorator/swagger';
-import { UploadResponse } from './dto/upload.dto';
+import { UploadResponse } from '../dto/upload.dto';
 import * as fs from 'fs';
 
 @ApiTags('上传文件')

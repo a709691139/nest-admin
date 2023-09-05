@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, FindOneOptions, In, Repository } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '../entity/user.entity';
 import { UserAuthService } from './userAuth.service';
-import { RoleService } from '../role/role.service';
-import { PageUserReqDto, UpdateRolesDto } from './user.dto';
+import { RoleService } from './role.service';
+import { PageUserReqDto, UpdateRolesDto } from '../dto/user.dto';
 
 @Injectable()
 export class UserService {

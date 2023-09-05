@@ -9,8 +9,8 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { User } from './user.entity';
+import { UserService } from '../service/user.service';
+import { User } from '../entity/user.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Pagination } from '@/common/dto/ResponseWrap';
 import {
@@ -30,11 +30,12 @@ import {
   UpdateRolesDto,
   ResetPasswordReqDto,
   PageUserReqDto,
-} from './user.dto';
+} from '../dto/user.dto';
 import { responseError, responseSuccess } from '@/utils/result';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
-import { UserAuthService } from './userAuth.service';
+import { UserAuthService } from '../service/userAuth.service';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
+import { ImageCodeService } from '../service/imageCode.service';
 
 @ApiTags('系统用户 sys_user')
 @Controller('sys_user')
@@ -42,6 +43,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly userAuthService: UserAuthService,
+    private readonly imageCodeService: ImageCodeService,
     private readonly httpCommonDataProvider: HttpCommonDataProvider,
   ) {}
 
@@ -92,7 +94,14 @@ export class UserController {
   @NotNeedLogin()
   @ApiResponseWrap(LoginSuccessResponseDto)
   async loginByPassword(@Body() dto: LoginPasswordUserDto) {
-    // 校验图片验证码 TODO
+    // 校验图片验证码
+    const validImageCode = await this.imageCodeService.checkValidImageCode(
+      dto.imageCodeId,
+      dto.imageCode,
+    );
+    if (!validImageCode) {
+      return responseError('图片验证码错误');
+    }
     // 校验密码正确
     const user = await this.userService.findOneByOptions({
       where: {
