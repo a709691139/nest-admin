@@ -76,6 +76,14 @@ export class LoginPasswordUserDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  imageCode: string;
+
+  @IsString()
+  @IsNotEmpty()
+  imageCodeId: string;
 }
 
 export class LoginSuccessResponseDto {

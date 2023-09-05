@@ -6,6 +6,7 @@ import { PermissionModule } from './permission/permission.module';
 import { AppModule } from '@/app.module';
 import { UploadController } from './upload.controller';
 import { DictModule } from './dict/dict.module';
+import { ImageCodeService } from './imageCode.service';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { DictModule } from './dict/dict.module';
     forwardRef(() => AppModule),
   ],
   controllers: [SystemController, UploadController],
-  providers: [],
-  exports: [],
+  providers: [ImageCodeService],
+  exports: [ImageCodeService],
 })
 export class SystemModule {}

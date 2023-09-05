@@ -1168,6 +1168,11 @@
   resolved "https://registry.npmmirror.com/@types/node/-/node-20.4.0.tgz#01d637d1891e419bc85763b46f42809cd2d5addb"
   integrity sha512-jfT7iTf/4kOQ9S7CHV9BIyRaQqHu67mOjsIQBC3BKZvzvUB6zLxEwJ6sBE3ozcvP8kF6Uk5PXN0Q+c0dfhGX0g==
 
+"@types/node@^14.14.3":
+  version "14.18.58"
+  resolved "https://registry.npmmirror.com/@types/node/-/node-14.18.58.tgz#547e64027defb95f34824794574dabf5417bc615"
+  integrity sha512-Y8ETZc8afYf6lQ/mVp096phIVsgD/GmDxtm3YaPcc+71jmi/J6zdwbwaUU4JvS56mq6aSfbpkcKhQ5WugrWFPw==
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npmmirror.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -2885,6 +2890,13 @@ function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmmirror.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
+
+gd-bmp@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmmirror.com/gd-bmp/-/gd-bmp-2.0.1.tgz#06db5bc01a02877442447535952175137f035f82"
+  integrity sha512-980ykVIc2M0q1FrRUVw/bAacEOivCkKGqnlne3yLyyIEy3TyC9XtUixQd71nrC2UF+Bnt3dKZus/Ud+PaKQXfQ==
+  dependencies:
+    "@types/node" "^14.14.3"
 
 generate-function@^2.3.1:
   version "2.3.1"
