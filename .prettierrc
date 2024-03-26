@@ -1,4 +1,10 @@
 {
+  "arrowParens": "avoid",
+  "bracketSameLine": true,
+  "bracketSpacing": true,
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "endOfLine": "lf",
+  "disableLanguages": ["json", "css", "scss"],
+  "printWidth": 80
 }

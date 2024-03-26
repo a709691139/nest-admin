@@ -99,6 +99,10 @@ async regis(@Body() dto: RegisUserDto) {
 
 系统级别的都用`sys_`前缀，如`sys_user`
 
+## QueryBuilder 查询
+
+复杂的 sql 请用这个
+
 ## todo
 
 ### demo 例子
