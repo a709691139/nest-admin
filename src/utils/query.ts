@@ -29,7 +29,7 @@ export function createQueryWrapper<T>(param: T) {
   }
   const keys = Object.keys(param);
   const ignoreKeys = ['page', 'perPage', 'orderBy', 'orderDir'];
-  keys.forEach((key) => {
+  keys.forEach(key => {
     if (ignoreKeys.includes(key)) {
       return;
     }
@@ -46,7 +46,7 @@ export function createQueryWrapper<T>(param: T) {
         options.where[key] = In(value.split(','));
       } else if (/_begin$/.test(key)) {
         const endTimeKey = key.slice(0, key.length - 6) + '_end';
-        if (keys.find((v) => v === endTimeKey)) {
+        if (keys.find(v => v === endTimeKey)) {
           options.where[key] = MoreThanOrEqual(value);
           options.where[endTimeKey] = LessThanOrEqual(param[endTimeKey]);
         }

@@ -32,7 +32,7 @@ export class AppController {
     );
     this.count++;
     console.log(`index1 / 当前进程的PID为：${process.pid}`, this.count);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
     // console.log('index1 count', this.count);
     return this.appService.getHello();
   }
@@ -43,7 +43,7 @@ export class AppController {
   async getHello2() {
     this.count++;
     console.log(`index2 / 当前进程的PID为：${process.pid}`, this.count);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
     console.log('index2 count', this.count);
     return this.appService.getHello();
   }
@@ -75,7 +75,7 @@ export class AppController {
   @NotNeedLogin()
   async redisLock() {
     await this.lockService.lock('test1', 2 * 60 * 1000, 100, 10);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
     this.count++;
     this.lockService.unlock('test1');
     return this.count;

@@ -70,6 +70,6 @@ export class DictItem extends CommonEntity {
   @Column('double', { comment: '排序', nullable: true, default: 1 })
   sortNo: number;
 
-  @ManyToOne(() => Dict, (dict) => dict.items)
+  @ManyToOne(() => Dict, dict => dict.items)
   dict: Dict;
 }

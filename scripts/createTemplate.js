@@ -49,7 +49,7 @@ function copyFolderSync(source, target) {
   const files = fs.readdirSync(source);
 
   // 遍历源文件夹中的文件和子文件夹
-  files.forEach((file) => {
+  files.forEach(file => {
     const sourcePath = path.join(source, file);
     const targetPath = path.join(target, file);
 
@@ -70,7 +70,7 @@ function renameFilesInFolder(folderPath) {
   console.log('files', files);
 
   // 遍历文件夹中的所有文件
-  files.forEach((file) => {
+  files.forEach(file => {
     const filePath = path.join(folderPath, file);
     const stats = fs.statSync(filePath);
     if (stats.isDirectory()) {

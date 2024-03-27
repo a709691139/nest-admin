@@ -71,7 +71,7 @@ export class PermissionService {
   }
 
   async creates(entityDatas: Array<Partial<Permission>>) {
-    const list = entityDatas.map((v) => {
+    const list = entityDatas.map(v => {
       return this.permissionRepository.create(v);
     });
     return this.permissionRepository.save(list);

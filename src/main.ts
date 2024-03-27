@@ -31,9 +31,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors: ValidationError[]) => {
-        const messages = errors.map((error) =>
-          Object.values(error.constraints),
-        );
+        const messages = errors.map(error => Object.values(error.constraints));
         const message = messages.join(', ');
         throw new HttpException(
           'Validation failed：' + message,

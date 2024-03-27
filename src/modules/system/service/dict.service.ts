@@ -49,7 +49,7 @@ export class DictService {
   async remove(id: string): Promise<void> {
     const parent = await this.findOne(id);
     if (parent.items.length) {
-      await this.dictItemRepository.delete(parent.items.map((v) => v.id));
+      await this.dictItemRepository.delete(parent.items.map(v => v.id));
     }
     await this.dictRepository.delete({ id });
   }
@@ -65,15 +65,15 @@ export class DictService {
     }
     // 把旧的删了，重新添加
     if (parent.items.length) {
-      this.dictItemRepository.delete(parent.items.map((v) => v.id));
+      this.dictItemRepository.delete(parent.items.map(v => v.id));
     }
     if (entityData.items) {
       entityData.items.sort((v1, v2) => (v1.sortNo || 1) - (v2.sortNo || 1));
-      const items = entityData.items.map((v) => {
+      const items = entityData.items.map(v => {
         const item = new DictItem();
         item.tenantId = this.httpCommonDataProvider.getTenantId();
         item.dictId = parent.id;
-        Object.keys(v).map((key) => {
+        Object.keys(v).map(key => {
           item[key] = v[key];
         });
         delete item.id;
@@ -93,7 +93,7 @@ export class DictService {
     if (!res) {
       return [];
     }
-    const children: ItemDto[] = res.items.map((v) => {
+    const children: ItemDto[] = res.items.map(v => {
       return {
         label: v.label,
         value: v.value,

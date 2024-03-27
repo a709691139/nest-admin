@@ -41,6 +41,6 @@ export class Dict extends CommonEntity {
   @Column('varchar', { length: 255, nullable: true })
   desc: string;
 
-  @OneToMany(() => DictItem, (dictItem) => dictItem.dict)
+  @OneToMany(() => DictItem, dictItem => dictItem.dict)
   items: DictItem[];
 }

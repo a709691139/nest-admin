@@ -92,9 +92,9 @@ export class PermissionController {
     const { roleIds } = this.httpCommonDataProvider.getTokenData();
     const roles = this.taskService
       .getRoles()
-      .filter((v) => roleIds.includes(v.id));
+      .filter(v => roleIds.includes(v.id));
     let permissions: Permission[] = [];
-    roles.forEach((v) => {
+    roles.forEach(v => {
       permissions.push(...v.permissions);
     });
     permissions = uniqBy(permissions, 'id');
@@ -110,7 +110,7 @@ export class PermissionController {
     const { parentId, buttons } = req;
     const parent = new Permission();
     parent.id = parentId;
-    const permissions = buttons.map((v) => {
+    const permissions = buttons.map(v => {
       const item = new Permission();
       item.name = v.name;
       item.perms = v.perms;

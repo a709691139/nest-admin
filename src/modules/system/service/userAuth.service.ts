@@ -31,7 +31,7 @@ export class UserAuthService {
     const tokenData: TokenData = {
       userId: user.id,
       username: user.username,
-      roleIds: user.roles.map((role) => role.id),
+      roleIds: user.roles.map(role => role.id),
     };
     const token = jwt.sign(tokenData, this.configService.get('appkey'), {
       expiresIn: seconds,

@@ -33,9 +33,9 @@ export class TaskService {
       relations: ['permissions'],
     });
     this.roles = roles;
-    roles.forEach((role) => {
+    roles.forEach(role => {
       this.rolePermissions[role.id] = {};
-      role.permissions.forEach((permission) => {
+      role.permissions.forEach(permission => {
         if (permission.menuType === '2') {
           this.rolePermissions[role.id][permission.perms] = true;
         }
