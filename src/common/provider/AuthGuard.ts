@@ -17,7 +17,7 @@ import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import Redis from 'ioredis';
 import * as jwt from 'jsonwebtoken';
-import { TaskService } from '../schedule/task.service';
+import { GlobalDataService } from './GlobalDataService';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     private reflector: Reflector,
     @InjectRedis() private readonly redis: Redis,
     private readonly configService: ConfigService,
-    private readonly taskService: TaskService,
+    private readonly globalDataService: GlobalDataService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
     );
 
-    if (!this.taskService.getRoles().length) {
+    if (!this.globalDataService.getRoles().length) {
       throw new HttpException(
         '服务器初始化权限接口中，请耐心等待',
         HttpStatus.FORBIDDEN,
@@ -92,7 +92,7 @@ export class AuthGuard implements CanActivate {
         throw new HttpException('接口权限不足', HttpStatus.FORBIDDEN);
       }
       for (const roleId of roleIds) {
-        const rolePermissions = this.taskService.getRolePermissions();
+        const rolePermissions = this.globalDataService.getRolePermissions();
         if (rolePermissions[roleId]) {
           for (const needPermission of needPermissions) {
             if (rolePermissions[roleId][needPermission]) {

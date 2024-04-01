@@ -21,11 +21,11 @@ import {
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { createQueryWrapper } from '@/utils/query';
 import { responseSuccess } from '@/utils/result';
-import { TaskService } from '@/common/schedule/task.service';
 import { uniqBy } from 'lodash';
 import { NotNeedLogin } from '@/common/decorator/NotNeedLogin';
 import { NeedPermissions } from '@/common/decorator/NeedPermissions';
 import { CreateButtonsReq } from '../dto/permission.dto';
+import { GlobalDataService } from '@/common/provider/GlobalDataService';
 
 @ApiTags('菜单权限表 sys_permission')
 @Controller('sys_permission')
@@ -33,7 +33,7 @@ export class PermissionController {
   constructor(
     private readonly permissionService: PermissionService,
     private readonly httpCommonDataProvider: HttpCommonDataProvider,
-    private readonly taskService: TaskService,
+    private readonly globalDataService: GlobalDataService,
   ) {}
 
   @Get('/page')
@@ -90,7 +90,7 @@ export class PermissionController {
   @ApiResponseArrayWrap(Permission)
   async getMyPermissions() {
     const { roleIds } = this.httpCommonDataProvider.getTokenData();
-    const roles = this.taskService
+    const roles = this.globalDataService
       .getRoles()
       .filter(v => roleIds.includes(v.id));
     let permissions: Permission[] = [];

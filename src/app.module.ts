@@ -17,6 +17,7 @@ import { AuthGuard } from './common/provider/AuthGuard';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './common/schedule/task.service';
 import { MulterModule } from '@nestjs/platform-express';
+import { GlobalDataService } from './common/provider/GlobalDataService';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { MulterModule } from '@nestjs/platform-express';
   ],
   controllers: [AppController],
   providers: [
+    GlobalDataService,
     AppService,
     HttpCommonDataProvider,
     TaskService,
@@ -73,7 +75,7 @@ import { MulterModule } from '@nestjs/platform-express';
     },
     PostSubscriber,
   ],
-  exports: [TaskService],
+  exports: [TaskService, GlobalDataService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

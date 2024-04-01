@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { InjectConnection } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
+import { GlobalDataService } from '../provider/GlobalDataService';
 
 @Global()
 @Injectable()
@@ -12,16 +13,12 @@ export class TaskService {
     private schedulerRegistry: SchedulerRegistry,
     @InjectConnection() private connection: Connection,
     private readonly configService: ConfigService,
+    private readonly globalDataService: GlobalDataService,
   ) {
     Logger.debug('TaskService constructor');
   }
 
   private readonly logger = new Logger(TaskService.name);
-
-  private roles: Role[] = [];
-  /** 角色权限map：只含按钮权限 */
-  private rolePermissions: { [roleId: string]: { [perms: string]: boolean } } =
-    {};
 
   @Cron('0 */5 * * * *', { name: 'queryRoles' })
   async queryRoles() {
@@ -32,22 +29,16 @@ export class TaskService {
       select: ['id', 'name', 'tenantId'],
       relations: ['permissions'],
     });
-    this.roles = roles;
+    const rolePermissions: any = {};
     roles.forEach(role => {
-      this.rolePermissions[role.id] = {};
+      rolePermissions[role.id] = {};
       role.permissions.forEach(permission => {
         if (permission.menuType === '2') {
-          this.rolePermissions[role.id][permission.perms] = true;
+          rolePermissions[role.id][permission.perms] = true;
         }
       });
     });
-  }
-
-  getRoles() {
-    return this.roles;
-  }
-
-  getRolePermissions() {
-    return this.rolePermissions;
+    this.globalDataService.setRoles(roles);
+    this.globalDataService.setRolePermissions(rolePermissions);
   }
 }
