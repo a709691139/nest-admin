@@ -19,11 +19,20 @@ import { Permission } from './entity/permission.entity';
 import { User } from './entity/user.entity';
 import { Role } from './entity/role.entity';
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
+import { SystemConfig } from './entity/systemConfig.entity';
+import { SystemConfigService } from './service/systemConfig.service';
 
 @Module({
   imports: [
     forwardRef(() => AppModule),
-    TypeOrmModule.forFeature([Role, Dict, DictItem, Permission, User]),
+    TypeOrmModule.forFeature([
+      Role,
+      Dict,
+      DictItem,
+      Permission,
+      User,
+      SystemConfig,
+    ]),
   ],
   controllers: [
     SystemController,
@@ -33,6 +42,7 @@ import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider
     RoleController,
     SystemController,
     UserController,
+    SystemController,
   ],
   providers: [
     HttpCommonDataProvider,
@@ -42,6 +52,7 @@ import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider
     RoleService,
     UserService,
     UserAuthService,
+    SystemConfigService,
   ],
   exports: [ImageCodeService],
 })
