@@ -118,12 +118,18 @@ export class SystemConfigController {
   })
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @NeedPermissions('sys_config:updateOfficialCustomerServiceContact')
-  @ApiResponseWrap(OfficialCustomerServiceContactDto)
+  @ApiResponseWrap()
   async updateOfficialCustomerServiceContact(
     @Body() dto: OfficialCustomerServiceContactDto,
   ) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
     dto.id = 'OfficialCustomerServiceContact';
-    return responseSuccess(await this.systemConfigRepository.save(dto));
+    return responseSuccess(
+      await this.systemConfigRepository.save({
+        id: dto.id,
+        tenantId: dto.tenantId,
+        data: JSON.stringify({ list: dto.list }),
+      }),
+    );
   }
 }
