@@ -21,6 +21,7 @@ import { Role } from './entity/role.entity';
 import { HttpCommonDataProvider } from '@/common/provider/HttpCommonDataProvider';
 import { SystemConfig } from './entity/systemConfig.entity';
 import { SystemConfigService } from './service/systemConfig.service';
+import { SystemConfigController } from './controller/systemConfig.controller';
 
 @Module({
   imports: [
@@ -42,7 +43,7 @@ import { SystemConfigService } from './service/systemConfig.service';
     RoleController,
     SystemController,
     UserController,
-    SystemController,
+    SystemConfigController,
   ],
   providers: [
     HttpCommonDataProvider,
