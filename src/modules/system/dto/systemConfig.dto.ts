@@ -5,7 +5,7 @@ import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 /** 官方客服联系方式Dto */
 export class OfficialCustomerServiceContactDto {
   tenantId: string;
-  id: string;
+  code: string;
   @ApiProperty({
     required: true,
     description: '联系方式列表',

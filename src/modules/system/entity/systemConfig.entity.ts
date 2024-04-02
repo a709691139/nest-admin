@@ -20,10 +20,14 @@ import {
 */
 @Entity({ name: 'sys_config' })
 export class SystemConfig extends CommonEntity {
-  /** 唯一编码 */
   @ApiProperty({ required: false })
-  @PrimaryColumn('varchar', { length: 100, comment: '唯一编码' })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  /** 编码 */
+  @ApiProperty({ required: false })
+  @Column('varchar', { length: 100, comment: '编码', nullable: false })
+  code: string;
 
   /** 名称 */
   @ApiProperty({

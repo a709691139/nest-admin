@@ -103,7 +103,8 @@ export class SystemConfigController {
   async getOfficialCustomerService() {
     const entity = await this.systemConfigRepository.findOne({
       where: {
-        id: 'OfficialCustomerServiceContact',
+        tenantId: this.httpCommonDataProvider.getTenantId(),
+        code: 'OfficialCustomerServiceContact',
       },
       select: ['data'],
     });
@@ -123,10 +124,25 @@ export class SystemConfigController {
     @Body() dto: OfficialCustomerServiceContactDto,
   ) {
     dto.tenantId = this.httpCommonDataProvider.getTenantId();
-    dto.id = 'OfficialCustomerServiceContact';
+    dto.code = 'OfficialCustomerServiceContact';
+    const existEntity = await this.systemConfigRepository.findOne({
+      where: {
+        tenantId: this.httpCommonDataProvider.getTenantId(),
+        code: 'OfficialCustomerServiceContact',
+      },
+    });
+    if (!existEntity) {
+      return responseSuccess(
+        await this.systemConfigRepository.save({
+          code: dto.code,
+          tenantId: dto.tenantId,
+          data: JSON.stringify({ list: dto.list }),
+        }),
+      );
+    }
     return responseSuccess(
       await this.systemConfigRepository.save({
-        id: dto.id,
+        id: existEntity.id,
         tenantId: dto.tenantId,
         data: JSON.stringify({ list: dto.list }),
       }),
