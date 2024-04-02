@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { SystemConfigService } from '../service/systemConfig.service';
 import { SystemConfig } from '../entity/systemConfig.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -85,7 +94,7 @@ export class SystemConfigController {
     return responseSuccess(await this.systemConfigService.remove(id));
   }
 
-  @Get('getOfficialCustomerServiceContact')
+  @Post('getOfficialCustomerServiceContact')
   @ApiOperation({
     summary: '获取官方客服联系方式',
   })
@@ -101,5 +110,20 @@ export class SystemConfigController {
     if (!entity || !entity.data) return responseSuccess(null);
     const data = JSON.parse(entity.data);
     return responseSuccess(data);
+  }
+
+  @Post('updateOfficialCustomerServiceContact')
+  @ApiOperation({
+    summary: '更新官方客服联系方式',
+  })
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @NeedPermissions('sys_config:updateOfficialCustomerServiceContact')
+  @ApiResponseWrap(OfficialCustomerServiceContactDto)
+  async updateOfficialCustomerServiceContact(
+    @Body() dto: OfficialCustomerServiceContactDto,
+  ) {
+    dto.tenantId = this.httpCommonDataProvider.getTenantId();
+    dto.id = 'OfficialCustomerServiceContact';
+    return responseSuccess(await this.systemConfigRepository.save(dto));
   }
 }
