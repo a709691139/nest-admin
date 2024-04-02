@@ -1,7 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-function changeLineEndings(directory) {
+function changeLineEndings(directory, currentDepth = 0, maxDepth = 4) {
+  if (currentDepth > maxDepth) {
+    return;
+  }
+
   fs.readdir(directory, (err, files) => {
     if (err) {
       console.error('Error reading directory:', err);
@@ -34,12 +38,13 @@ function changeLineEndings(directory) {
               console.log(`Line endings changed for file: ${filePath}`);
             });
           });
+        } else if (stats.isDirectory()) {
+          changeLineEndings(filePath, currentDepth + 1, maxDepth);
         }
       });
     });
   });
 }
-
 // Usage
 const directoryPaths = ['./scripts', './src'];
 directoryPaths.forEach(changeLineEndings);
