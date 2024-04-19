@@ -22,14 +22,14 @@ export class CommonEntity {
   tenantId: string;
 
   @CreateDateColumn({ transformer: new DateTimeTransformer() })
-  createdAt: Date;
+  createdAt: string;
 
   @UpdateDateColumn({ transformer: new DateTimeTransformer() })
-  updatedAt: Date;
+  updatedAt: string;
 }
 
 @Entity()
 export class CommonSoftDeleteEntity extends CommonEntity {
   @DeleteDateColumn({ transformer: new DateTimeTransformer() })
-  deletedAt: Date;
+  deletedAt: string;
 }
