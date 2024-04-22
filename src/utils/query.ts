@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 
 /**
- * 创建查询条件
+ * 创建查询条件, 自动去除空字符串和undefined
  * 1、支持模糊查询 前后带*
  * 2、取非查询	在查询输入框前面输入! 则查询该字段不等于输入值的数据 (数值类型不支持此种查询,可以将数值字段定义为字符串类型的)
  * 3、in查询	若传入的数据带,(逗号) 则表示该查询为in查询
@@ -30,6 +30,8 @@ export function createQueryWrapper<T>(param: T) {
   const keys = Object.keys(param);
   const ignoreKeys = ['page', 'perPage', 'orderBy', 'orderDir'];
   keys.forEach(key => {
+    if (param[key] === undefined) return;
+    if (param[key] === '') return;
     if (ignoreKeys.includes(key)) {
       return;
     }
