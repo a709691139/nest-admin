@@ -27,4 +27,18 @@ export class GlobalDataService {
   getRolePermissions() {
     return this.rolePermissions;
   }
+
+  /** 系统端-判断是否有权限 */
+  checkPermission(roleIds: string[], permissionId: string) {
+    if (!permissionId || !roleIds.length) return false;
+    for (const roleId of roleIds) {
+      const rolePermissions = this.rolePermissions;
+      if (rolePermissions[roleId]) {
+        if (rolePermissions[roleId][permissionId]) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
