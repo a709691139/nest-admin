@@ -47,10 +47,11 @@ export function createQueryWrapper<T>(param: T) {
       } else if (value.includes(',')) {
         options.where[key] = In(value.split(','));
       } else if (/_begin$/.test(key)) {
-        const endTimeKey = key.slice(0, key.length - 6) + '_end';
+        const timeKey = key.slice(0, key.length - 6);
+        const endTimeKey = timeKey + '_end';
+        options.where[timeKey] = MoreThanOrEqual(value);
         if (keys.find(v => v === endTimeKey)) {
-          options.where[key] = MoreThanOrEqual(value);
-          options.where[endTimeKey] = LessThanOrEqual(param[endTimeKey]);
+          options.where[timeKey] = LessThanOrEqual(param[endTimeKey]);
         }
       } else if (/_end$/.test(key)) {
       } else if (/^(le|ge|gt|lt)\s.+/.test(value)) {
