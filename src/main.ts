@@ -13,6 +13,7 @@ import {
 import { join } from 'path';
 import { GlobalExceptionFilter } from './common/filter/GlobalExceptionFilter';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import { transValidationErrors } from './utils/validate';
 
 const PREFIX = '/api';
 const SWAGGER_PATH = '/swagger';
@@ -31,8 +32,8 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors: ValidationError[]) => {
-        const messages = errors.map(error => Object.values(error.constraints));
-        const message = messages.join(', ');
+        const messages = transValidationErrors(errors).map(error => error.constraints);
+        const message = messages.join('; ');
         throw new HttpException(
           'Validation failed：' + message,
           HttpStatus.BAD_REQUEST,
